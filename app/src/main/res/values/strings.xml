@@ -1,3 +1,5 @@
 <resources>
     <string name="app_name">CrumbMaster</string>
+    <string name="map_string">MAP HERE!!!</string>
+    <string name="menu_string">Menu Here!!</string>
 </resources>

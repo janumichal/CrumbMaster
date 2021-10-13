@@ -10,7 +10,10 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.CrumbMaster">
         <activity
-            android:name=".MainActivity"
+            android:name=".MenuActivity"
+            android:exported="true" />
+        <activity
+            android:name=".MapActivity"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
