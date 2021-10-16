@@ -50,7 +50,6 @@ class MapActivity : AppCompatActivity() {
 
         val scaleY = ObjectAnimator.ofFloat(circle, "ScaleY", scaleVariable.toFloat())
         val scaleX = ObjectAnimator.ofFloat(circle, "ScaleX", scaleVariable.toFloat())
-        
         scaleX.duration = 1000
         scaleY.duration = 1000
 
@@ -62,10 +61,11 @@ class MapActivity : AppCompatActivity() {
             override fun onAnimationStart(animation: Animator?){}
             override fun onAnimationRepeat(animation: Animator?) {}
             override fun onAnimationEnd(animation: Animator?) {
+
                 val intent = Intent(context, MenuActivity::class.java)
                 startActivity(intent)
                 overridePendingTransition(R.anim.fade_out, R.anim.hold)
-
+                recreate()
             }
         })
     }
@@ -77,14 +77,7 @@ class MapActivity : AppCompatActivity() {
         val mMenuBtn = findViewById<FloatingActionButton>(R.id.MenuBtn)
 
         mMenuBtn.setOnClickListener{
-
-
             scaleCircleAnim(this)
-
-//            val intent = Intent(this,MenuActivity::class.java)
-//            startActivity(intent)
-//            overridePendingTransition(R.anim.fade_out, R.anim.hold)
-
         }
 
     }
