@@ -2,4 +2,5 @@
     <string name="app_name">CrumbMaster</string>
     <string name="map_string">MAP HERE!!!</string>
     <string name="menu_string">Menu Here!!</string>
+    <color name="darkgrey">#8A8A8A</color>
 </resources>

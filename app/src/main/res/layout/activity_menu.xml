@@ -5,7 +5,8 @@
     android:id="@+id/MenuLayout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".MenuActivity">
+    tools:context=".MenuActivity"
+    android:background="@color/darkgrey">
 
     <TextView
         android:id="@+id/textView"
