@@ -8,6 +8,8 @@ import android.content.Context
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.os.Handler
+import android.os.Looper
 import android.util.DisplayMetrics
 import android.util.Log
 import android.view.animation.Animation
@@ -30,6 +32,8 @@ class MapActivity : AppCompatActivity() {
     }
 
     private fun scaleCircleAnim(context: Context){
+        val menuBtn = findViewById<FloatingActionButton>(R.id.MenuBtn)
+        menuBtn.hide()
         val displayMatrics = DisplayMetrics()
         // from android api 30
         if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.R) {
@@ -42,16 +46,12 @@ class MapActivity : AppCompatActivity() {
         val dHeight = displayMatrics.heightPixels
         val circle = findViewById<ImageView>(R.id.MenuCircle)
         val cHeight = circle.height
-        val scaleVariable = dHeight/(cHeight/2 - cHeight/4)
-
-        Log.d(tag, "Display height: $dHeight")
-        Log.d(tag, "Circle height: $cHeight")
-        Log.d(tag, "Multiplier: $scaleVariable")
+        val scaleVariable = dHeight/(cHeight/2) + 1
 
         val scaleY = ObjectAnimator.ofFloat(circle, "ScaleY", scaleVariable.toFloat())
         val scaleX = ObjectAnimator.ofFloat(circle, "ScaleX", scaleVariable.toFloat())
-        scaleX.duration = 1000
-        scaleY.duration = 1000
+        scaleX.duration = 600
+        scaleY.duration = 600
 
         val scaleUp = AnimatorSet()
 
@@ -61,7 +61,6 @@ class MapActivity : AppCompatActivity() {
             override fun onAnimationStart(animation: Animator?){}
             override fun onAnimationRepeat(animation: Animator?) {}
             override fun onAnimationEnd(animation: Animator?) {
-
                 val intent = Intent(context, MenuActivity::class.java)
                 startActivity(intent)
                 overridePendingTransition(R.anim.fade_out, R.anim.hold)
