@@ -1,0 +1,14 @@
+[
+    {
+        "obtained":true,
+        "title":"Test achievement",
+        "description":"This is achievement description",
+        "points": 100
+    },
+    {
+        "obtained":true,
+        "title":"Test achievement2",
+        "description":"This is achievement description2",
+        "points": 200
+    }
+]

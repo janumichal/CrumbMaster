@@ -8,28 +8,16 @@ import android.content.Context
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.os.Handler
-import android.os.Looper
 import android.util.DisplayMetrics
-import android.util.Log
-import android.view.animation.Animation
-import android.view.animation.Animation.AnimationListener
-import android.view.animation.AnimationUtils
 import android.widget.ImageView
-import androidx.constraintlayout.widget.ConstraintLayout
 import com.google.android.material.floatingactionbutton.FloatingActionButton
+
+
 
 const val tag = "Debuging_TAG" // TODO remove later
 
 
 class MapActivity : AppCompatActivity() {
-    private fun getScaleAnimation(){
-        val a = AnimationUtils.loadAnimation(this, R.anim.fade_in)
-        a.reset()
-        val cl = findViewById<ConstraintLayout>(R.id.MapLayout)
-        cl.clearAnimation()
-        cl.startAnimation(a)
-    }
 
     private fun scaleCircleAnim(context: Context){
         val menuBtn = findViewById<FloatingActionButton>(R.id.MenuBtn)
@@ -74,7 +62,6 @@ class MapActivity : AppCompatActivity() {
         setContentView(R.layout.activity_map)
 
         val mMenuBtn = findViewById<FloatingActionButton>(R.id.MenuBtn)
-
         mMenuBtn.setOnClickListener{
             scaleCircleAnim(this)
         }
