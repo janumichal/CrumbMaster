@@ -1,20 +1,22 @@
 package com.example.crumbmaster
 
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.ArrayAdapter
 import android.widget.ListView
 import androidx.activity.OnBackPressedCallback
 import androidx.fragment.app.Fragment
 import java.io.IOException
 import com.beust.klaxon.Klaxon
-
-const val tag2 : String= "Debuging_TAG" // TODO remove later
+import com.example.crumbmaster.databinding.AchievmentListItemBinding
+import com.example.crumbmaster.databinding.FragmentAchievementsBinding
 
 class AchievementsFragment : Fragment() {
+    private var achievements : List<Achievement>? = emptyList()
+    private lateinit var binding : FragmentAchievementsBinding
+
+
     @Throws(IOException::class)
     private fun loadJsonFromAssets(file : String): String{
         val inStr = activity?.assets?.open(file)
@@ -31,6 +33,10 @@ class AchievementsFragment : Fragment() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
+
+        val jsonString : String = loadJsonFromAssets("achievements.json")
+        achievements = Klaxon().parseArray(jsonString)
 
         val callback = object : OnBackPressedCallback(true){
             override fun handleOnBackPressed() {
@@ -57,21 +63,10 @@ class AchievementsFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        val jsonString : String = loadJsonFromAssets("achievements.json")
-        val achievements = Klaxon().parseArray<Achievement>(jsonString)
+        binding = FragmentAchievementsBinding.inflate(layoutInflater)
+        activity?.setContentView(binding.root)
 
-
-        val lva = activity?.findViewById<ListView>(R.id.ListViewAchiev)
-        val array = ArrayList<String>()
-
-        achievements?.forEach {
-            array.add(it.title)
-        }
-
-        val arrayAdapter = ArrayAdapter(requireContext(), android.R.layout.simple_expandable_list_item_1, array)
-        lva?.adapter = arrayAdapter
-
-
+        binding.ListViewAchievment.adapter = AchievementsAdapter(requireActivity(), achievements!!)
 
     }
 }

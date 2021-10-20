@@ -52,9 +52,13 @@ class MapActivity : AppCompatActivity() {
                 val intent = Intent(context, MenuActivity::class.java)
                 startActivity(intent)
                 overridePendingTransition(R.anim.fade_out, R.anim.hold)
-                recreate()
             }
         })
+    }
+
+    override fun onPause() {
+        super.onPause()
+        recreate()
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
