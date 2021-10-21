@@ -1,6 +1,7 @@
 package com.example.crumbmaster
 
 import android.app.Activity
+import android.graphics.drawable.Drawable
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
@@ -21,9 +22,7 @@ class AchievementsAdapter (context: Activity, private val list: List<Achievement
 
         // TODO ICONS LOAD
         if (list[position].obtained){
-            // Has obtained the achievement
-        }else{
-            // Has NOT obtained the achievement
+            icon.setImageResource(R.drawable.obt)
         }
 
         Log.d(tag, "title: ${list[position].title}, dest: ${list[position].description}, points: ${list[position].points.toString()}")
