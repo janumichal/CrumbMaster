@@ -22,7 +22,6 @@ class StatisticsFragment : Fragment() {
                 }
             }
         }
-
         requireActivity().onBackPressedDispatcher.addCallback(this, callback)
     }
 

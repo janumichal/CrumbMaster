@@ -20,12 +20,9 @@ class AchievementsAdapter (context: Activity, private val list: List<Achievement
         val desc = view.findViewById<TextView>(R.id.item_description)
         val points = view.findViewById<TextView>(R.id.item_points)
 
-        // TODO ICONS LOAD
         if (list[position].obtained){
             icon.setImageResource(R.drawable.obt)
         }
-
-        Log.d(tag, "title: ${list[position].title}, dest: ${list[position].description}, points: ${list[position].points.toString()}")
 
         title.text = list[position].title
         desc.text = list[position].description
