@@ -36,8 +36,8 @@ class MenuFragment : Fragment() {
         return inflater.inflate(R.layout.fragment_menu, container, false)
     }
 
-    fun swap2Fragment(fragment : Fragment){
-        activity?.supportFragmentManager?.beginTransaction()?.apply {
+    private fun swap2Fragment(fragment : Fragment){
+        requireActivity().supportFragmentManager.beginTransaction().apply {
             //TODO Animation here
             replace(R.id.FragmentContainer, fragment)
             commit()
