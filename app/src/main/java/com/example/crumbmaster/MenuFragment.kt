@@ -53,7 +53,7 @@ class MenuFragment : Fragment() {
         }
 
         //OPTIONS
-        val optionsBtn = getView()?.findViewById<Button>(R.id.OptionsBtn)
+        val optionsBtn = getView()?.findViewById<Button>(R.id.SettingsBtn)
         optionsBtn?.setOnClickListener(){
             val optionsFragment = OptionsFragment()
             swap2Fragment(optionsFragment)

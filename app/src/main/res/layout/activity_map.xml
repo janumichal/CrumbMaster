@@ -25,7 +25,7 @@
         android:clickable="true"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        android:src="@drawable/menu_icon"
+        android:src="@drawable/menu_icon_menu"
         tools:ignore="SpeakableTextPresentCheck"
         tools:targetApi="m"
         app:borderWidth="0dp"
@@ -43,7 +43,7 @@
         android:contentDescription="TODO"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:srcCompat="@drawable/circle" />
+        app:srcCompat="@drawable/map_menu_animation_circle" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>
