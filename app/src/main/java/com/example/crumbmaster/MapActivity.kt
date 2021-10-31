@@ -12,6 +12,7 @@ import android.content.Intent
 import android.content.pm.PackageManager
 import android.location.Address
 import android.location.Geocoder
+import android.location.Location
 import android.location.LocationManager
 import android.os.Build
 import androidx.appcompat.app.AppCompatActivity
@@ -104,7 +105,6 @@ class MapActivity : AppCompatActivity(), OnMapReadyCallback {
 
     override fun onPause() {
         super.onPause()
-        //stopLocationUpdates()
         Log.d("Debug:", "onPause")
     }
 
@@ -147,8 +147,6 @@ class MapActivity : AppCompatActivity(), OnMapReadyCallback {
 
     }
 
-
-    @RequiresApi(Build.VERSION_CODES.O)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_map)
@@ -185,8 +183,7 @@ class MapActivity : AppCompatActivity(), OnMapReadyCallback {
             ).show()
         }
 
-        //loadData()
-
+        loadData()
         startTrackingPosition()
     }
 
@@ -233,7 +230,7 @@ class MapActivity : AppCompatActivity(), OnMapReadyCallback {
         return locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER)
     }
 
-    /**private fun loadData() {
+    private fun loadData() {
         val sharedPreferences = getSharedPreferences("shared preferences", MODE_PRIVATE)
         val gson = Gson()
         val json = sharedPreferences.getString("crumbs", null)
@@ -252,34 +249,52 @@ class MapActivity : AppCompatActivity(), OnMapReadyCallback {
         val json = gson.toJson(coordinates)
         editor.putString("crumbs", json)
         editor.apply()
-
     }
 
     fun append(arr: Array<LatLng>, element: LatLng): Array<LatLng> {
         val list: MutableList<LatLng> = arr.toMutableList()
         list.add(element)
         return list.toTypedArray()
-    }*/
+    }
 
-    val locationCallback = object : LocationCallback() {
+    private fun checkDistance(newLat:Double, newLong:Double):Boolean {
+        if (coordinates.isNullOrEmpty())
+            return true
+
+        val oldPosition = coordinates!!.last()
+        val result = FloatArray(1)
+        Location.distanceBetween(oldPosition.latitude, oldPosition.longitude, newLat, newLong, result)
+
+        Log.d("Distance", result[0].toString())
+
+        if (result[0] > 5)
+            return true
+
+        return false
+    }
+
+    private val locationCallback = object : LocationCallback() {
         override fun onLocationResult(p0: LocationResult) {
             val lastLocation = p0.lastLocation
             val mark = LatLng(lastLocation.latitude, lastLocation.longitude)
 
-            //coordinates = coordinates?.let { append(it, mark) }
+            val distanceOK = checkDistance(lastLocation.latitude, lastLocation.longitude)
 
-            //mMap.addMarker(MarkerOptions().position(mark).title("I'm here"))
+            if (distanceOK) {
+                coordinates = coordinates?.let { append(it, mark) }
+                drawPoint(lastLocation.latitude, lastLocation.longitude)
+            }
+
             mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(mark, 18f))
 
             getStreetName(lastLocation.latitude, lastLocation.longitude)
-            drawPoint(lastLocation.latitude, lastLocation.longitude)
             drawCurrentPosition(lastLocation.latitude, lastLocation.longitude)
         }
     }
 
-    private fun stopLocationUpdates() {
+    /**private fun stopLocationUpdates() {
         fusedLocationProviderClient.removeLocationUpdates(locationCallback)
-    }
+    }*/
 
     private fun startTrackingPosition() {
         locationRequest = LocationRequest()
@@ -287,22 +302,6 @@ class MapActivity : AppCompatActivity(), OnMapReadyCallback {
         locationRequest.interval = 10001
         //locationRequest.smallestDisplacement = 10F
         //locationRequest.numUpdates = 2
-
-        /**val locationCallback = object : LocationCallback() {
-            override fun onLocationResult(p0: LocationResult) {
-                val lastLocation = p0.lastLocation
-                val mark = LatLng(lastLocation.latitude, lastLocation.longitude)
-
-                coordinates = coordinates?.let { append(it, mark) }
-
-                //mMap.addMarker(MarkerOptions().position(mark).title("I'm here"))
-                mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(mark, 18f))
-
-                getStreetName(lastLocation.latitude, lastLocation.longitude)
-                drawPoint(lastLocation.latitude, lastLocation.longitude)
-                drawCurrentPosition(lastLocation.latitude, lastLocation.longitude)
-            }
-        }*/
 
         if (ActivityCompat.checkSelfPermission(
                 this,
@@ -320,13 +319,13 @@ class MapActivity : AppCompatActivity(), OnMapReadyCallback {
         )
     }
 
-    /**private fun drawPreviousCrumbs() {
+    private fun drawPreviousCrumbs() {
         loadData()
 
         for (c in coordinates!!) {
-            Log.d("Debug:", c.toString())
+            drawPoint(c.latitude, c.longitude)
         }
-    }*/
+    }
 
     override fun onMapReady(googleMap: GoogleMap) {
         val success = googleMap.setMapStyle(
@@ -341,36 +340,19 @@ class MapActivity : AppCompatActivity(), OnMapReadyCallback {
 
         mMap = googleMap
 
-        Log.d("Debug", "onMapReady")
-
-        //drawPreviousCrumbs()
+        drawPreviousCrumbs()
     }
 
     override fun onResume() {
         super.onResume()
-        val circle = findViewById<ImageView>(R.id.MenuCircle)
-        //circle.imageAlpha = 0
+
         val menuBtn = findViewById<FloatingActionButton>(R.id.MenuBtn)
         menuBtn.show()
-        Log.d("Circle after:", circle.height.toString())
-    }
-
-    override fun onStart() {
-        super.onStart()
-        Log.d("Debug:", "onStart")
-    }
-
-    override fun onStop() {
-        super.onStop()
-        Log.d("Debug:", "onStop")
     }
 
     override fun onDestroy() {
         super.onDestroy()
 
-        Log.d("Debug:", "onDestroy")
-
-        //saveData()
+        saveData()
     }
-
 }
