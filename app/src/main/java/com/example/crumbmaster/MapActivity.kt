@@ -67,7 +67,7 @@ class MapActivity : AppCompatActivity(), OnMapReadyCallback {
         val dHeight = displayMatrics.heightPixels
         val circle = findViewById<ImageView>(R.id.MenuCircle)
         val cHeight = circle.height
-        val scaleVariable = dHeight/(cHeight/2) + 1
+        val scaleVariable = dHeight/(cHeight/2) + 2.5
 
         val scaleY = ObjectAnimator.ofFloat(circle, "ScaleY", scaleVariable.toFloat())
         val scaleX = ObjectAnimator.ofFloat(circle, "ScaleX", scaleVariable.toFloat())
