@@ -1,14 +1,23 @@
 [
     {
-        "obtained":true,
+        "id": 0,
+        "obtained":false,
         "title":"Test achievement",
         "description":"This is achievement description",
         "points": 100
     },
     {
-        "obtained":true,
+        "id": 1,
+        "obtained":false,
         "title":"Test achievement2",
         "description":"This is achievement description2",
         "points": 200
+    },
+    {
+        "id": 2,
+        "obtained":false,
+        "title":"Test",
+        "description":"This is test description",
+        "points": 50
     }
 ]

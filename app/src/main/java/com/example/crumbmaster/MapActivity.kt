@@ -5,27 +5,35 @@ import android.animation.Animator
 import android.animation.AnimatorListenerAdapter
 import android.animation.AnimatorSet
 import android.animation.ObjectAnimator
+import android.annotation.SuppressLint
+import android.app.Activity
 import android.content.Context
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.location.Address
 import android.location.Geocoder
+import android.location.LocationManager
+import android.os.Build
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.os.Handler
 import android.os.Looper
 import android.util.DisplayMetrics
 import android.util.Log
 import android.widget.ImageView
+import androidx.annotation.RequiresApi
 import androidx.core.app.ActivityCompat
 import com.google.android.gms.location.*
-import com.google.android.gms.maps.CameraUpdateFactory
-import com.google.android.gms.maps.GoogleMap
-import com.google.android.gms.maps.OnMapReadyCallback
-import com.google.android.gms.maps.SupportMapFragment
-import com.google.android.gms.maps.model.LatLng
-import com.google.android.gms.maps.model.MarkerOptions
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 import java.util.*
+import com.beust.klaxon.Klaxon
+import com.google.android.gms.maps.*
+import com.google.android.gms.maps.model.*
+import com.google.android.material.snackbar.Snackbar
+import com.google.gson.Gson
+import com.google.gson.reflect.TypeToken
+import java.io.File
+import java.io.IOException
 
 
 const val tag = "Debuging_TAG" // TODO remove later
@@ -36,9 +44,13 @@ class MapActivity : AppCompatActivity(), OnMapReadyCallback {
     private lateinit var mMap: GoogleMap
 
     private var PERMISSION_ID = 10
+    var myCircle: Circle? = null
 
     lateinit var fusedLocationProviderClient: FusedLocationProviderClient
     lateinit var locationRequest: LocationRequest
+
+    var gpsStatus: Boolean = false
+    var coordinates: Array<LatLng>? = emptyArray()
 
     private fun scaleCircleAnim(context: Context){
         val menuBtn = findViewById<FloatingActionButton>(R.id.MenuBtn)
@@ -73,14 +85,75 @@ class MapActivity : AppCompatActivity(), OnMapReadyCallback {
                 val intent = Intent(context, MenuActivity::class.java)
                 startActivity(intent)
                 overridePendingTransition(R.anim.fade_out, R.anim.hold)
-                recreate()
             }
         })
+
+        Handler(Looper.getMainLooper()).postDelayed({
+            val scaleYY = ObjectAnimator.ofFloat(circle, "ScaleY", 0.5.toFloat())
+            val scaleXX = ObjectAnimator.ofFloat(circle, "ScaleX", 0.5.toFloat())
+            scaleX.duration = 600
+            scaleY.duration = 600
+
+            val scaleDown = AnimatorSet()
+
+            scaleDown.play(scaleXX).with(scaleYY)
+            scaleDown.start()
+        }, 1000)
+
     }
 
+    override fun onPause() {
+        super.onPause()
+        //stopLocationUpdates()
+        Log.d("Debug:", "onPause")
+    }
+
+    @Throws(IOException::class)
+    private fun loadJsonFromAssets(file : String): String{
+        val inStr = this.assets?.open(file)
+        val ret = ""
+        if (inStr != null){
+            val size = inStr.available()
+            val buffer = ByteArray(size)
+            inStr.read(buffer)
+            inStr.close()
+            return String(buffer, Charsets.UTF_8)
+        }
+        return ret
+    }
+
+    fun fileExists(fname: String?): Boolean {
+        val file: File = baseContext.getFileStreamPath(fname)
+        return file.exists()
+    }
+
+    private fun copyAchievements(){
+        if(!fileExists("Achievements.json")){
+            val fileName = "Achievements.json"
+            val jsonString : String = loadJsonFromAssets("achievements.json")
+            this.openFileOutput(fileName, Context.MODE_PRIVATE).use {
+                it.write(jsonString.toByteArray())
+            }
+            Log.d(tag, "File Created")
+        }else{
+            // TODO DELETE
+            Log.d(tag, "File Exists")
+//            val fileName = "Achievements.json"
+//            val jsonString : String = loadJsonFromAssets("achievements.json")
+//            this.openFileOutput(fileName, Context.MODE_PRIVATE).use {
+//                it.write(jsonString.toByteArray())
+//            }
+        }
+
+    }
+
+
+    @RequiresApi(Build.VERSION_CODES.O)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_map)
+
+        copyAchievements()
 
         val mMenuBtn = findViewById<FloatingActionButton>(R.id.MenuBtn)
         mMenuBtn.setOnClickListener{
@@ -100,7 +173,19 @@ class MapActivity : AppCompatActivity(), OnMapReadyCallback {
             ActivityCompat.requestPermissions(this, arrayOf(android.Manifest.permission.ACCESS_FINE_LOCATION), PERMISSION_ID)
         }
 
+        Log.d("Debug:", "onCreate")
+
         fusedLocationProviderClient = LocationServices.getFusedLocationProviderClient(this)
+
+        if(!locationEnabled()) {
+            Snackbar.make(
+                findViewById(R.id.map),
+                "Please enable your position",
+                Snackbar.LENGTH_LONG
+            ).show()
+        }
+
+        //loadData()
 
         startTrackingPosition()
     }
@@ -115,22 +200,109 @@ class MapActivity : AppCompatActivity(), OnMapReadyCallback {
             Log.d("Debug:", "Ulica $streetName")
     }
 
+    private fun drawPoint(lat:Double, long:Double) {
+        val circleOptions = CircleOptions()
+
+        circleOptions.center(LatLng(lat, long))
+        circleOptions.radius(2.5)
+        circleOptions.strokeColor(0xffffffff.toInt())
+        circleOptions.fillColor(0xFFFF783e.toInt())
+        circleOptions.strokeWidth(3f)
+
+        mMap.addCircle(circleOptions)
+    }
+
+    private fun drawCurrentPosition(lat:Double, long:Double) {
+        if (myCircle != null) {
+            myCircle!!.remove()
+        }
+
+        val circleOptions = CircleOptions()
+
+        circleOptions.center(LatLng(lat, long))
+        circleOptions.radius(4.0)
+        circleOptions.strokeColor(0x55FF783e)
+        circleOptions.fillColor(0xFFFF401F.toInt())
+        circleOptions.strokeWidth(100.0f)
+
+        myCircle = mMap.addCircle(circleOptions)
+    }
+
+    private fun locationEnabled():Boolean {
+        val locationManager = getSystemService(Context.LOCATION_SERVICE) as LocationManager
+        return locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER)
+    }
+
+    /**private fun loadData() {
+        val sharedPreferences = getSharedPreferences("shared preferences", MODE_PRIVATE)
+        val gson = Gson()
+        val json = sharedPreferences.getString("crumbs", null)
+        val type = object : TypeToken<Array<LatLng>>() {}.getType()
+        coordinates = gson.fromJson(json, type)
+
+        if (coordinates == null) {
+            coordinates = emptyArray()
+        }
+    }
+
+    private fun saveData() {
+        val sharedPreferences = getSharedPreferences("shared preferences", MODE_PRIVATE)
+        val editor = sharedPreferences.edit()
+        val gson = Gson()
+        val json = gson.toJson(coordinates)
+        editor.putString("crumbs", json)
+        editor.apply()
+
+    }
+
+    fun append(arr: Array<LatLng>, element: LatLng): Array<LatLng> {
+        val list: MutableList<LatLng> = arr.toMutableList()
+        list.add(element)
+        return list.toTypedArray()
+    }*/
+
+    val locationCallback = object : LocationCallback() {
+        override fun onLocationResult(p0: LocationResult) {
+            val lastLocation = p0.lastLocation
+            val mark = LatLng(lastLocation.latitude, lastLocation.longitude)
+
+            //coordinates = coordinates?.let { append(it, mark) }
+
+            //mMap.addMarker(MarkerOptions().position(mark).title("I'm here"))
+            mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(mark, 18f))
+
+            getStreetName(lastLocation.latitude, lastLocation.longitude)
+            drawPoint(lastLocation.latitude, lastLocation.longitude)
+            drawCurrentPosition(lastLocation.latitude, lastLocation.longitude)
+        }
+    }
+
+    private fun stopLocationUpdates() {
+        fusedLocationProviderClient.removeLocationUpdates(locationCallback)
+    }
+
     private fun startTrackingPosition() {
         locationRequest = LocationRequest()
         locationRequest.priority = LocationRequest.PRIORITY_HIGH_ACCURACY
-        locationRequest.interval = 15000
+        locationRequest.interval = 10001
+        //locationRequest.smallestDisplacement = 10F
+        //locationRequest.numUpdates = 2
 
-        val locationCallback = object : LocationCallback() {
+        /**val locationCallback = object : LocationCallback() {
             override fun onLocationResult(p0: LocationResult) {
                 val lastLocation = p0.lastLocation
                 val mark = LatLng(lastLocation.latitude, lastLocation.longitude)
 
-                mMap.addMarker(MarkerOptions().position(mark).title("I'm here"))
+                coordinates = coordinates?.let { append(it, mark) }
+
+                //mMap.addMarker(MarkerOptions().position(mark).title("I'm here"))
                 mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(mark, 18f))
 
                 getStreetName(lastLocation.latitude, lastLocation.longitude)
+                drawPoint(lastLocation.latitude, lastLocation.longitude)
+                drawCurrentPosition(lastLocation.latitude, lastLocation.longitude)
             }
-        }
+        }*/
 
         if (ActivityCompat.checkSelfPermission(
                 this,
@@ -148,8 +320,57 @@ class MapActivity : AppCompatActivity(), OnMapReadyCallback {
         )
     }
 
+    /**private fun drawPreviousCrumbs() {
+        loadData()
+
+        for (c in coordinates!!) {
+            Log.d("Debug:", c.toString())
+        }
+    }*/
+
     override fun onMapReady(googleMap: GoogleMap) {
+        val success = googleMap.setMapStyle(
+            MapStyleOptions.loadRawResourceStyle(
+                this, R.raw.style_json
+            )
+        )
+
+        if (!success) {
+            Log.e("Debug", "Style parsing failed.")
+        }
+
         mMap = googleMap
+
+        Log.d("Debug", "onMapReady")
+
+        //drawPreviousCrumbs()
+    }
+
+    override fun onResume() {
+        super.onResume()
+        val circle = findViewById<ImageView>(R.id.MenuCircle)
+        //circle.imageAlpha = 0
+        val menuBtn = findViewById<FloatingActionButton>(R.id.MenuBtn)
+        menuBtn.show()
+        Log.d("Circle after:", circle.height.toString())
+    }
+
+    override fun onStart() {
+        super.onStart()
+        Log.d("Debug:", "onStart")
+    }
+
+    override fun onStop() {
+        super.onStop()
+        Log.d("Debug:", "onStop")
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+
+        Log.d("Debug:", "onDestroy")
+
+        //saveData()
     }
 
 }

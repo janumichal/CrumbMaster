@@ -1,33 +1,42 @@
 package com.example.crumbmaster
 
+import android.content.Context
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.ArrayAdapter
-import android.widget.ListView
 import androidx.activity.OnBackPressedCallback
 import androidx.fragment.app.Fragment
-import java.io.IOException
 import com.beust.klaxon.Klaxon
+import com.example.crumbmaster.databinding.FragmentAchievementsBinding
 
-const val tag2 : String= "Debuging_TAG" // TODO remove later
+const val tag2 = "Debuging_TAG"
 
 class AchievementsFragment : Fragment() {
-    @Throws(IOException::class)
-    private fun loadJsonFromAssets(file : String): String{
-        val inStr = activity?.assets?.open(file)
-        val ret = ""
-        if (inStr != null){
-            val size = inStr.available()
-            val buffer = ByteArray(size)
-            inStr.read(buffer)
-            inStr.close()
-            return String(buffer, Charsets.UTF_8)
+    private var achievements : List<Achievement>? = emptyList()
+    private lateinit var binding : FragmentAchievementsBinding
+    private val fileName = "Achievements.json"
+
+    private fun achObtained(ach_id: Int){
+        val jsonString : String = requireContext().openFileInput(fileName).bufferedReader().readText()
+        val tmpAchievements : List<Achievement>? = Klaxon().parseArray(jsonString)
+
+        for (i in tmpAchievements!!.indices){
+            if (tmpAchievements[i].id == ach_id){
+                tmpAchievements[i].obtained = true
+            }
         }
-        return ret
+
+        val newJsonString = Klaxon().toJsonString(tmpAchievements)
+
+        requireActivity().openFileOutput(fileName, Context.MODE_PRIVATE).use {
+            it.write(newJsonString.toByteArray())
+        }
+        loadAchFromFile(fileName)
+
     }
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -54,24 +63,22 @@ class AchievementsFragment : Fragment() {
         return inflater.inflate(R.layout.fragment_achievements, container, false)
     }
 
+    private fun loadAchFromFile(fileName: String){
+        val jsonString : String = requireContext().openFileInput("Achievements.json").bufferedReader().readText()
+        achievements = Klaxon().parseArray(jsonString)
+    }
+
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        val jsonString : String = loadJsonFromAssets("achievements.json")
-        val achievements = Klaxon().parseArray<Achievement>(jsonString)
+        achObtained(1) // TODO to use elesewhere
+        loadAchFromFile(fileName)
 
 
-        val lva = activity?.findViewById<ListView>(R.id.ListViewAchiev)
-        val array = ArrayList<String>()
+        binding = FragmentAchievementsBinding.inflate(layoutInflater)
+        activity?.setContentView(binding.root)
 
-        achievements?.forEach {
-            array.add(it.title)
-        }
-
-        val arrayAdapter = ArrayAdapter(requireContext(), android.R.layout.simple_expandable_list_item_1, array)
-        lva?.adapter = arrayAdapter
-
-
+        binding.ListViewAchievment.adapter = AchievementsAdapter(requireActivity(), achievements!!)
 
     }
 }

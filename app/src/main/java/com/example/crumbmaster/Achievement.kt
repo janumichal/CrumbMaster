@@ -1,3 +1,3 @@
 package com.example.crumbmaster
 
-class Achievement (val obtained: Boolean, val title: String, val description: String, val points: Int)
+data class Achievement (val id: Int, var obtained: Boolean, val title: String, val description: String, val points: Int)

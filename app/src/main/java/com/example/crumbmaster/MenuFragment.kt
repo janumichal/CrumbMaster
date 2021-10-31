@@ -7,6 +7,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
 import androidx.activity.OnBackPressedCallback
+import com.google.android.material.floatingactionbutton.FloatingActionButton
 
 class MenuFragment : Fragment() {
 
@@ -46,7 +47,7 @@ class MenuFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         // BACK
-        val backBtn = getView()?.findViewById<Button>(R.id.BackBtn)
+        val backBtn = getView()?.findViewById<FloatingActionButton>(R.id.BackBtn)
         backBtn?.setOnClickListener(){
             return2Map()
         }

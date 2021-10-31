@@ -6,7 +6,11 @@
     tools:context=".AchievementsFragment">
 
     <ListView
-        android:id="@+id/ListViewAchiev"
+        android:id="@+id/ListViewAchievment"
         android:layout_width="match_parent"
-        android:layout_height="match_parent" />
+        android:layout_height="match_parent"
+        tools:listitem="@layout/achievment_list_item"
+        android:divider="@android:color/transparent"
+        android:dividerHeight="5dp"
+        />
 </RelativeLayout>
