@@ -10,6 +10,9 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.CrumbMaster">
         <activity
+            android:name=".AchievemtsListActivity"
+            android:exported="false" />
+        <activity
             android:name=".MenuActivity"
             android:exported="true" />
         <activity
