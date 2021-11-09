@@ -1,5 +1,6 @@
 package com.example.crumbmaster
 
+import android.content.Intent
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
@@ -62,8 +63,11 @@ class MenuFragment : Fragment() {
         // ACHIEVEMENTS
         val achievementsBtn = getView()?.findViewById<Button>(R.id.AchievementsBtn)
         achievementsBtn?.setOnClickListener(){
-            val achievementsFragment = AchievementsFragment()
-            swap2Fragment(achievementsFragment)
+//            val achievementsFragment = AchievementsFragment()
+//            swap2Fragment(achievementsFragment)
+            val intent = Intent(context, AchievemtsListActivity::class.java)
+            startActivity(intent)
+            requireActivity().overridePendingTransition(R.anim.hold, R.anim.hold)
         }
 
 
