@@ -44,6 +44,9 @@ class MapActivity : AppCompatActivity(), OnMapReadyCallback {
 
     private lateinit var mMap: GoogleMap
 
+    var mapLoaded: Boolean = false
+    var firstLook:Boolean = true
+
     private var PERMISSION_ID = 10
     var myCircle: Circle? = null
 
@@ -52,6 +55,7 @@ class MapActivity : AppCompatActivity(), OnMapReadyCallback {
 
     var gpsStatus: Boolean = false
     var coordinates: Array<LatLng>? = emptyArray()
+    var backgroundEnabled: Boolean = true
 
     private fun scaleCircleAnim(context: Context){
         val menuBtn = findViewById<FloatingActionButton>(R.id.MenuBtn)
@@ -101,11 +105,6 @@ class MapActivity : AppCompatActivity(), OnMapReadyCallback {
             scaleDown.start()
         }, 1000)
 
-    }
-
-    override fun onPause() {
-        super.onPause()
-        Log.d("Debug:", "onPause")
     }
 
     @Throws(IOException::class)
@@ -184,7 +183,11 @@ class MapActivity : AppCompatActivity(), OnMapReadyCallback {
         }
 
         loadData()
-        startTrackingPosition()
+        //startTrackingPosition()
+        if (backgroundEnabled){
+            startLocationService()
+        }
+            //startLocationService()
     }
 
     private fun getStreetName(lat:Double, long:Double){
@@ -193,8 +196,8 @@ class MapActivity : AppCompatActivity(), OnMapReadyCallback {
         val address : MutableList<Address> = geoCoder.getFromLocation(lat, long, 1)
 
         streetName = address[0].thoroughfare
-        if(streetName != null)
-            Log.d("Debug:", "Ulica $streetName")
+        /**if(streetName != null)
+            Log.d("Debug:", "Ulica $streetName")*/
     }
 
     private fun drawPoint(lat:Double, long:Double) {
@@ -240,6 +243,9 @@ class MapActivity : AppCompatActivity(), OnMapReadyCallback {
         if (coordinates == null) {
             coordinates = emptyArray()
         }
+
+        backgroundEnabled = sharedPreferences.getBoolean("backgroundEnabled", true)
+
     }
 
     private fun saveData() {
@@ -265,7 +271,7 @@ class MapActivity : AppCompatActivity(), OnMapReadyCallback {
         val result = FloatArray(1)
         Location.distanceBetween(oldPosition.latitude, oldPosition.longitude, newLat, newLong, result)
 
-        Log.d("Distance", result[0].toString())
+        //Log.d("Distance", result[0].toString())
 
         if (result[0] > 5)
             return true
@@ -281,20 +287,38 @@ class MapActivity : AppCompatActivity(), OnMapReadyCallback {
             val distanceOK = checkDistance(lastLocation.latitude, lastLocation.longitude)
 
             if (distanceOK) {
-                coordinates = coordinates?.let { append(it, mark) }
+                //coordinates = coordinates?.let { append(it, mark) }
                 drawPoint(lastLocation.latitude, lastLocation.longitude)
+
+                if (!backgroundEnabled) {
+                    coordinates = coordinates?.let { append(it, mark) }
+                    saveData()
+                    Log.d("Background", "false")
+                }
+                else
+                    Log.d("Background", "true")
             }
 
-            mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(mark, 18f))
+            if (firstLook){
+                mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(mark, 18f))
+                firstLook = false
+            }
+
 
             getStreetName(lastLocation.latitude, lastLocation.longitude)
             drawCurrentPosition(lastLocation.latitude, lastLocation.longitude)
         }
     }
 
-    /**private fun stopLocationUpdates() {
+    private fun stopLocationUpdates() {
         fusedLocationProviderClient.removeLocationUpdates(locationCallback)
-    }*/
+    }
+
+    private fun startLocationService() {
+        val intent = Intent(applicationContext, LocationService::class.java)
+        intent.action = "startLocationService"
+        startService(intent)
+    }
 
     private fun startTrackingPosition() {
         locationRequest = LocationRequest()
@@ -341,18 +365,39 @@ class MapActivity : AppCompatActivity(), OnMapReadyCallback {
         mMap = googleMap
 
         drawPreviousCrumbs()
+
+        mapLoaded = true
     }
 
     override fun onResume() {
         super.onResume()
 
+        startTrackingPosition()
+
         val menuBtn = findViewById<FloatingActionButton>(R.id.MenuBtn)
         menuBtn.show()
+
+        if (mapLoaded)
+            drawPreviousCrumbs()
+    }
+
+    override fun onStart() {
+        super.onStart()
+    }
+
+    override fun onPause() {
+        super.onPause()
+        firstLook = true
+        stopLocationUpdates()
+    }
+
+    override fun onStop() {
+        super.onStop()
     }
 
     override fun onDestroy() {
         super.onDestroy()
 
-        saveData()
+        //saveData()
     }
 }
