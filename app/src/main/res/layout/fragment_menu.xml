@@ -1,0 +1,132 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".MenuFragment">
+
+
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/BackBtn"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentBottom="true"
+        android:backgroundTint="@color/black"
+        android:clickable="true"
+        android:src="@drawable/menu_icon_back"
+        app:borderWidth="0dp"
+        app:tint="@color/white"
+        app:useCompatPadding="false"
+        tools:ignore="SpeakableTextPresentCheck"
+        android:layout_margin="20dp"/>
+
+    <LinearLayout
+        android:id="@+id/btm_row_ll"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_above="@id/BackBtn"
+        android:gravity="center"
+        android:showDividers="beginning|end|middle"
+        android:divider="@drawable/divider_horizontal"
+        android:layout_marginTop="@dimen/btn_spacing">
+
+
+        <Button
+            android:id="@+id/about"
+            android:layout_width="@dimen/menu_btn_width"
+            android:layout_height="@dimen/menu_btn_height"
+            android:drawableTop="@drawable/menu_icon_info"
+            android:insetTop="0dp"
+            android:insetBottom="0dp"
+            android:paddingTop="10dp"
+            android:paddingBottom="10dp"
+            android:text="About"
+            android:textSize="@dimen/menu_text_size" />
+
+        <Button
+            android:id="@+id/AchievementsBtn"
+            android:layout_width="@dimen/menu_btn_width"
+            android:layout_height="@dimen/menu_btn_height"
+            android:drawableTop="@drawable/menu_icon_achevements"
+            android:insetTop="0dp"
+            android:insetBottom="0dp"
+            android:paddingTop="10dp"
+            android:paddingBottom="10dp"
+            android:text="Achieves"
+            android:textSize="@dimen/menu_text_size" />
+
+        <Button
+            android:id="@+id/StatisticsBtn"
+            android:layout_width="@dimen/menu_btn_width"
+            android:layout_height="@dimen/menu_btn_height"
+            android:drawableTop="@drawable/menu_icon_stats"
+            android:insetTop="0dp"
+            android:insetBottom="0dp"
+            android:paddingTop="10dp"
+            android:paddingBottom="10dp"
+            android:text="Stats"
+            android:textSize="@dimen/menu_text_size"
+            />
+
+    </LinearLayout>
+
+
+<LinearLayout
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="horizontal"
+    android:layout_above="@id/btm_row_ll"
+    android:gravity="center"
+    android:showDividers="beginning|end|middle"
+    android:divider="@drawable/divider_horizontal"
+    android:layout_marginTop="@dimen/btn_spacing">
+
+
+    <Button
+        android:id="@+id/MenuItem1"
+        android:layout_width="@dimen/menu_btn_width"
+        android:layout_height="@dimen/menu_btn_height"
+        android:drawableTop="@drawable/menu_icon_achevements"
+        android:insetTop="0dp"
+        android:insetBottom="0dp"
+        android:paddingTop="10dp"
+        android:paddingBottom="10dp"
+        android:text="Menu 1"
+        android:textSize="@dimen/menu_text_size"
+        tools:layout_editor_absoluteX="20dp"
+        tools:layout_editor_absoluteY="419dp" />
+
+    <Button
+        android:id="@+id/dailyQuest"
+        android:layout_width="@dimen/menu_btn_width"
+        android:layout_height="@dimen/menu_btn_height"
+        android:drawableTop="@drawable/menu_icon_quest"
+        android:insetTop="0dp"
+        android:insetBottom="0dp"
+        android:paddingTop="10dp"
+        android:paddingBottom="10dp"
+        android:text="Dailys"
+        android:textSize="@dimen/menu_text_size"
+        tools:layout_editor_absoluteX="151dp"
+        tools:layout_editor_absoluteY="419dp" />
+
+    <Button
+        android:id="@+id/SettingsBtn"
+        android:layout_width="@dimen/menu_btn_width"
+        android:layout_height="@dimen/menu_btn_height"
+        android:drawableTop="@drawable/menu_icon_settings"
+        android:insetTop="0dp"
+        android:insetBottom="0dp"
+        android:paddingTop="10dp"
+        android:paddingBottom="10dp"
+        android:text="Settings"
+        android:textSize="@dimen/menu_text_size"
+        tools:layout_editor_absoluteX="281dp"
+        tools:layout_editor_absoluteY="418dp" />
+
+</LinearLayout>
+
+</RelativeLayout>
