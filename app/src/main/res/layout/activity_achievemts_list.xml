@@ -3,19 +3,19 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".AchievementsFragment"
+    tools:context=".AchievemtsListActivity"
     android:background="#101114">
 
     <TextView
         android:id="@+id/achi_textview"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Achievements"
-        android:textSize="34sp"
-        android:layout_marginTop="20dp"
         android:layout_marginStart="20dp"
+        android:layout_marginTop="10dp"
+        android:text="Achievements"
         android:textColor="@color/white"
-        android:textStyle="bold"/>
+        android:textSize="34sp"
+        android:textStyle="bold" />
 
     <ListView
         android:id="@+id/ListViewAchievment"
@@ -23,8 +23,11 @@
         android:layout_height="match_parent"
         tools:listitem="@layout/achievment_list_item"
         android:divider="@android:color/transparent"
-        android:dividerHeight="15dp"
-        android:layout_margin="20dp"
+        android:dividerHeight="10dp"
+        android:layout_marginTop="10dp"
+        android:layout_marginStart="10dp"
+        android:layout_marginEnd="10dp"
         android:layout_below="@id/achi_textview"
+        android:scrollbars="none"
         />
 </RelativeLayout>

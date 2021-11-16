@@ -85,22 +85,13 @@ class MapActivity : AppCompatActivity() {
     }
 
     private fun copyAchievements(){
-        if(!fileExists("Achievements.json")){
+//        if(!fileExists("Achievements.json")){
             val fileName = "Achievements.json"
             val jsonString : String = loadJsonFromAssets("achievements.json")
             this.openFileOutput(fileName, Context.MODE_PRIVATE).use {
                 it.write(jsonString.toByteArray())
             }
-            Log.d(tag, "File Created")
-        }else{
-            // TODO DELETE
-            Log.d(tag, "File Exists")
-//            val fileName = "Achievements.json"
-//            val jsonString : String = loadJsonFromAssets("achievements.json")
-//            this.openFileOutput(fileName, Context.MODE_PRIVATE).use {
-//                it.write(jsonString.toByteArray())
-//            }
-        }
+//        }
 
     }
 
