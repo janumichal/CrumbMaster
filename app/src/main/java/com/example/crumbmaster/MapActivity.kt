@@ -40,65 +40,7 @@ import java.lang.StringBuilder
 import kotlin.collections.ArrayList
 
 
-var points: Int = 0
-var streetList: MutableList<String> = ArrayList()
-private val fileName_streets = "Streets.txt"
 
-private fun fileExists(fname: String?, context: Context): Boolean {
-    val file: File = context.getFileStreamPath(fname)
-    return file.exists()
-}
-
-fun loadStreetsFromIMem(context: Context){
-    if(fileExists(fileName_streets, context)){
-        val tmpList: MutableList<String> = ArrayList()
-        val file: File = context.getFileStreamPath(fileName_streets)
-        file.forEachLine {
-            tmpList.add(it)
-        }
-        streetList = tmpList
-    }
-}
-
-private fun addStreet2IMem(name: String, context: Context){
-    if(!fileExists(fileName_streets, context)){
-        context.openFileOutput(fileName_streets, Context.MODE_PRIVATE).use {
-            it.write("".toByteArray())
-        }
-    }
-    val file: File = context.getFileStreamPath(fileName_streets)
-    file.appendText(name + "\n")
-}
-
-private fun checkNumOfStrDiscovered(num: Int, context: Context){
-    when (num) {
-        1 -> {
-            val id = 0
-            if(!isAchievObtainedById(id, context)){
-                updateAchivById(id, context)
-                Log.d(tag, "Yeey achi id: $id unlocked")
-            }
-        }
-        10 -> {
-            val id = 1
-            if(!isAchievObtainedById(id, context)){
-                updateAchivById(id, context)
-            }
-        }
-        else -> {
-
-        }
-    }
-}
-
-fun addStreet(name: String, context: Context){
-    if(!streetList.contains(name)){
-        streetList.add(name)
-        addStreet2IMem(name, context)
-        addPoints(5, context)
-        checkNumOfStrDiscovered(streetList.size, context)
-    }
-}
 
 class MapActivity : AppCompatActivity(), OnMapReadyCallback {
 

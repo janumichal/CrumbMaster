@@ -11,65 +11,8 @@ import com.example.crumbmaster.databinding.ActivityAchievemtsListBinding
 
 const val tag = "Debuging_TAG" // TODO remove later
 
-var achievements : List<Achievement>? = emptyList()
-private val fileName_ach = "Achievements.json"
-private val fileName_points = "Points.json"
 
-private fun loadJsonFromFile(fileName: String, context: Context) : List<Achievement>?{
-    val jsonString : String = context.openFileInput("Achievements.json").bufferedReader().readText()
-    return Klaxon().parseArray(jsonString)
-}
 
-fun addPoints(add: Int, context: Context){
-    val jsonString : String = context.openFileInput(fileName_points).bufferedReader().readText()
-    val tmpPoints : Points? = Klaxon().parse<Points>(jsonString)
-
-    tmpPoints!!.points = tmpPoints.points + add;
-    points = tmpPoints.points
-    val newJsonString = Klaxon().toJsonString(tmpPoints)
-
-    context.openFileOutput(fileName_points, Context.MODE_PRIVATE).use {
-        it.write(newJsonString.toByteArray())
-    }
-}
-
-fun updatePoints(context: Activity){
-    val points_window = context.findViewById<TextView>(R.id.map_points_text)
-    points_window.text = points.toString()
-}
-
-fun updateAchivById(ach_id: Int, context: Context){
-    val jsonString : String = context.openFileInput(fileName_ach).bufferedReader().readText()
-    val tmpAchievements : List<Achievement>? = Klaxon().parseArray(jsonString)
-
-    for (i in tmpAchievements!!.indices){
-        if (tmpAchievements[i].id == ach_id){
-            tmpAchievements[i].obtained = true
-            addPoints(tmpAchievements[i].points, context)
-        }
-    }
-
-    val newJsonString = Klaxon().toJsonString(tmpAchievements)
-
-    context.openFileOutput(fileName_ach, Context.MODE_PRIVATE).use {
-        it.write(newJsonString.toByteArray())
-    }
-    // load achievements
-    achievements = loadJsonFromFile(fileName_ach, context)
-
-}
-
-fun isAchievObtainedById(id: Int, context: Context): Boolean{
-    val jsonString : String = context.openFileInput(fileName_ach).bufferedReader().readText()
-    val tmpAchievements : List<Achievement>? = Klaxon().parseArray(jsonString)
-
-    for (i in tmpAchievements!!.indices){
-        if (tmpAchievements[i].id == id){
-            return tmpAchievements[i].obtained
-        }
-    }
-    return true
-}
 
 //######################################################################################################
 
