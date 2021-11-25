@@ -148,8 +148,8 @@ class MapActivity : AppCompatActivity(), OnMapReadyCallback {
         copyAssets2InternalMem("points.json", "Points.json")
 
         // load current points
-        updatePointsAdd(0, this) // load points from internal mem
-        updatePointsWindow(this) // show points
+        addPoints(0, this) // load points from internal mem
+        updatePoints(this) // show points
 
         val mMenuBtn = findViewById<FloatingActionButton>(R.id.MenuBtn)
         mMenuBtn.setOnClickListener{

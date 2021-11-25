@@ -15,12 +15,12 @@ private var achievements : List<Achievement>? = emptyList()
 private val fileName_ach = "Achievements.json"
 private val fileName_points = "Points.json"
 
-public fun loadJsonFromFile(fileName: String, context: Context) : List<Achievement>?{
+private fun loadJsonFromFile(fileName: String, context: Context) : List<Achievement>?{
     val jsonString : String = context.openFileInput("Achievements.json").bufferedReader().readText()
     return Klaxon().parseArray(jsonString)
 }
 
-fun updatePointsAdd(add: Int, context: Context){
+fun addPoints(add: Int, context: Context){
     val jsonString : String = context.openFileInput(fileName_points).bufferedReader().readText()
     val tmpPoints : Points? = Klaxon().parse<Points>(jsonString)
 
@@ -33,7 +33,7 @@ fun updatePointsAdd(add: Int, context: Context){
     }
 }
 
-fun updatePointsWindow(context: Activity){
+fun updatePoints(context: Activity){
     val points_window = context.findViewById<TextView>(R.id.map_points_text)
     points_window.text = points.toString()
 }
