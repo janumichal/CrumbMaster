@@ -35,12 +35,70 @@ import com.google.android.gms.maps.model.*
 import com.google.android.material.snackbar.Snackbar
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
-import java.io.File
-import java.io.IOException
+import java.io.*
+import java.lang.StringBuilder
+import kotlin.collections.ArrayList
 
 
-var points = 0
+var points: Int = 0
+var streetList: MutableList<String> = ArrayList()
+private val fileName_streets = "Streets.txt"
 
+private fun fileExists(fname: String?, context: Context): Boolean {
+    val file: File = context.getFileStreamPath(fname)
+    return file.exists()
+}
+
+fun loadStreetsFromIMem(context: Context){
+    if(fileExists(fileName_streets, context)){
+        val tmpList: MutableList<String> = ArrayList()
+        val file: File = context.getFileStreamPath(fileName_streets)
+        file.forEachLine {
+            tmpList.add(it)
+        }
+        streetList = tmpList
+    }
+}
+
+private fun addStreet2IMem(name: String, context: Context){
+    if(!fileExists(fileName_streets, context)){
+        context.openFileOutput(fileName_streets, Context.MODE_PRIVATE).use {
+            it.write("".toByteArray())
+        }
+    }
+    val file: File = context.getFileStreamPath(fileName_streets)
+    file.appendText(name + "\n")
+}
+
+private fun checkNumOfStrDiscovered(num: Int, context: Context){
+    when (num) {
+        1 -> {
+            val id = 0
+            if(!isAchievObtainedById(id, context)){
+                updateAchivById(id, context)
+                Log.d(tag, "Yeey achi id: $id unlocked")
+            }
+        }
+        10 -> {
+            val id = 1
+            if(!isAchievObtainedById(id, context)){
+                updateAchivById(id, context)
+            }
+        }
+        else -> {
+
+        }
+    }
+}
+
+fun addStreet(name: String, context: Context){
+    if(!streetList.contains(name)){
+        streetList.add(name)
+        addStreet2IMem(name, context)
+        addPoints(5, context)
+        checkNumOfStrDiscovered(streetList.size, context)
+    }
+}
 
 class MapActivity : AppCompatActivity(), OnMapReadyCallback {
 
@@ -123,11 +181,6 @@ class MapActivity : AppCompatActivity(), OnMapReadyCallback {
         return ret
     }
 
-    fun fileExists(fname: String?): Boolean {
-        val file: File = baseContext.getFileStreamPath(fname)
-        return file.exists()
-    }
-
     private fun copyAssets2InternalMem(from: String, to: String){
 //        if(!fileExists(to)){
             val fileName = to
@@ -137,6 +190,11 @@ class MapActivity : AppCompatActivity(), OnMapReadyCallback {
             }
 //        }
 
+    }
+    private fun removeContentIMem(name: String, context: Context){
+        this.openFileOutput(name, Context.MODE_PRIVATE).use {
+            it.write("".toByteArray())
+        }
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -150,6 +208,28 @@ class MapActivity : AppCompatActivity(), OnMapReadyCallback {
         // load current points
         addPoints(0, this) // load points from internal mem
         updatePoints(this) // show points
+
+        removeContentIMem(fileName_streets, this) // todo delete
+
+        // load streets internal file
+        loadStreetsFromIMem(this)
+
+
+
+        // TESTING TODO delete
+        addStreet("lala1", this)
+        addStreet("lala1", this)
+        addStreet("lala2", this)
+        addStreet("lala3", this)
+
+        Log.d(tag, "################# Streets START ##################")
+        for (item: String in streetList){
+            Log.d(tag, item + "\n")
+        }
+        Log.d(tag, "################# Streets END ##################")
+        // TESTING TODO delete
+
+
 
         val mMenuBtn = findViewById<FloatingActionButton>(R.id.MenuBtn)
         mMenuBtn.setOnClickListener{
@@ -371,7 +451,7 @@ class MapActivity : AppCompatActivity(), OnMapReadyCallback {
     override fun onResume() {
         super.onResume()
 
-        updatePointsWindow(this)
+        updatePoints(this)
         startTrackingPosition()
 
         val menuBtn = findViewById<FloatingActionButton>(R.id.MenuBtn)

@@ -36,14 +36,22 @@
         <TextView
             android:id="@+id/map_points_text"
             android:layout_width="wrap_content"
-            android:layout_height="30dp"
+            android:layout_height="wrap_content"
             android:gravity="center|center_vertical"
             android:text="100"
-            android:layout_margin="0dp"
+            android:layout_marginTop="3dp"
+            android:layout_marginBottom="3dp"
             android:textAlignment="center"
             android:textColor="@color/white"
             android:textStyle="bold"
             android:textSize="20sp"/>
+        <ImageView
+            android:id="@+id/duck_icon"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/points_icon_w"
+            android:paddingStart="5dp"
+            />
 
     </LinearLayout>
 

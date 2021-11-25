@@ -11,7 +11,7 @@ import com.example.crumbmaster.databinding.ActivityAchievemtsListBinding
 
 const val tag = "Debuging_TAG" // TODO remove later
 
-private var achievements : List<Achievement>? = emptyList()
+var achievements : List<Achievement>? = emptyList()
 private val fileName_ach = "Achievements.json"
 private val fileName_points = "Points.json"
 
@@ -45,7 +45,7 @@ fun updateAchivById(ach_id: Int, context: Context){
     for (i in tmpAchievements!!.indices){
         if (tmpAchievements[i].id == ach_id){
             tmpAchievements[i].obtained = true
-            updatePointsAdd(tmpAchievements[i].points, context)
+            addPoints(tmpAchievements[i].points, context)
         }
     }
 
@@ -57,6 +57,18 @@ fun updateAchivById(ach_id: Int, context: Context){
     // load achievements
     achievements = loadJsonFromFile(fileName_ach, context)
 
+}
+
+fun isAchievObtainedById(id: Int, context: Context): Boolean{
+    val jsonString : String = context.openFileInput(fileName_ach).bufferedReader().readText()
+    val tmpAchievements : List<Achievement>? = Klaxon().parseArray(jsonString)
+
+    for (i in tmpAchievements!!.indices){
+        if (tmpAchievements[i].id == id){
+            return tmpAchievements[i].obtained
+        }
+    }
+    return true
 }
 
 //######################################################################################################
@@ -88,6 +100,7 @@ class AchievemtsListActivity : AppCompatActivity() {
 
         updateAchivById(1, this) // TODO to use elesewhere
         achievements = loadJsonFromFile(fileName_ach, this)
+
         binding.ListViewAchievment.adapter = AchievementsAdapter(this, achievements!!)
 
     }
