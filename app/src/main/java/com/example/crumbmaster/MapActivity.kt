@@ -21,7 +21,9 @@ import android.os.Handler
 import android.os.Looper
 import android.util.DisplayMetrics
 import android.util.Log
+import android.view.View
 import android.widget.ImageView
+import android.widget.TextView
 import androidx.annotation.RequiresApi
 import androidx.core.app.ActivityCompat
 import com.google.android.gms.location.*
@@ -37,7 +39,7 @@ import java.io.File
 import java.io.IOException
 
 
-const val tag = "Debuging_TAG" // TODO remove later
+var points = 0
 
 
 class MapActivity : AppCompatActivity(), OnMapReadyCallback {
@@ -126,10 +128,10 @@ class MapActivity : AppCompatActivity(), OnMapReadyCallback {
         return file.exists()
     }
 
-    private fun copyAchievements(){
-//        if(!fileExists("Achievements.json")){
-            val fileName = "Achievements.json"
-            val jsonString : String = loadJsonFromAssets("achievements.json")
+    private fun copyAssets2InternalMem(from: String, to: String){
+//        if(!fileExists(to)){
+            val fileName = to
+            val jsonString : String = loadJsonFromAssets(from)
             this.openFileOutput(fileName, Context.MODE_PRIVATE).use {
                 it.write(jsonString.toByteArray())
             }
@@ -141,7 +143,13 @@ class MapActivity : AppCompatActivity(), OnMapReadyCallback {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_map)
 
-        copyAchievements()
+        // Copy from assets to internal mem
+        copyAssets2InternalMem("achievements.json", "Achievements.json")
+        copyAssets2InternalMem("points.json", "Points.json")
+
+        // load current points
+        updatePointsAdd(0, this) // load points from internal mem
+        updatePointsWindow(this) // show points
 
         val mMenuBtn = findViewById<FloatingActionButton>(R.id.MenuBtn)
         mMenuBtn.setOnClickListener{
@@ -363,6 +371,7 @@ class MapActivity : AppCompatActivity(), OnMapReadyCallback {
     override fun onResume() {
         super.onResume()
 
+        updatePointsWindow(this)
         startTrackingPosition()
 
         val menuBtn = findViewById<FloatingActionButton>(R.id.MenuBtn)
