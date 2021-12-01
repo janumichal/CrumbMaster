@@ -161,15 +161,59 @@ class MapActivity : AppCompatActivity(), OnMapReadyCallback {
         // TESTING TODO delete
         addStreet("lala1", this)
         addStreet("lala1", this)
-        addStreet("lala2", this)
+        addStreet("lalasdifjghsdafgjioaga2", this)
         addStreet("lala3", this)
-
-        Log.d(tag, "################# Streets START ##################")
-        for (item: String in streetList){
-            Log.d(tag, item + "\n")
-        }
-        Log.d(tag, "################# Streets END ##################")
-        // TESTING TODO delete
+        addStreet("lasfggaagsgag gasgsdala3", this)
+        addStreet("laladfdfsdfssdfsdf 3", this)
+        addStreet("lalasdfsdfsdf 3", this)
+        addStreet("lalfsdsdfdfssdfsdf a3", this)
+        addStreet("lala1", this)
+        addStreet("laleba1", this)
+        addStreet("lalwrgasdifjghsdafgjioaga2", this)
+        addStreet("lwrala3", this)
+        addStreet("lasfgnetgaagsgag gasgsdala3", this)
+        addStreet("laladwrgfdfsdfssdfsdf 3", this)
+        addStreet("lalathesdfsdfsdf 3", this)
+        addStreet("lalfsdthsdfdfssdfsdf a3", this)
+        addStreet("lahetrtla1", this)
+        addStreet("lalwgherga1", this)
+        addStreet("lalasdifjghsdafgjioaga2", this)
+        addStreet("lawerwrla3", this)
+        addStreet("lasfwggaagsgag gasgsdala3", this)
+        addStreet("lalawdfdfsdfssdfsdf 3", this)
+        addStreet("lalwasdfsdfsdf 3", this)
+        addStreet("lawlfsdsdfdfssdfsdf a3", this)
+        addStreet("lawla1", this)
+        addStreet("lawla1", this)
+        addStreet("lalaswdifjghsdafgjioaga2", this)
+        addStreet("lala3w", this)
+        addStreet("lasfwggaagsgag gasgsdala3", this)
+        addStreet("laladfdfsdfwssdfsdf 3", this)
+        addStreet("lalasdfsdfwesdf 3", this)
+        addStreet("lalfsdwesdfdfssdfsdf a3", this)
+        addStreet("lalwea1", this)
+        addStreet("lalawe1", this)
+        addStreet("lalaswedifjghsdafgjioaga2", this)
+        addStreet("lalwea3", this)
+        addStreet("lasfgwegaagsgag gasgsdala3", this)
+        addStreet("laladwefdfsdfssdfsdf 3", this)
+        addStreet("lalawesdfsdfsdf 3", this)
+        addStreet("lalwefsdsdfdfssdfsdf a3", this)
+        addStreet("lawela1", this)
+        addStreet("lawetla1", this)
+        addStreet("lalaswtedifjghsdafgjioaga2", this)
+        addStreet("lawetla3", this)
+        addStreet("lasfwteggaagsgag gasgsdala3", this)
+        addStreet("lalawetdfdfsdfssdfsdf 3", this)
+        addStreet("lalagswertsdfsdfsdf 3", this)
+        addStreet("lalfsdgdfssdfdfssdfsdf a3", this)
+//
+//        Log.d(tag, "################# Streets START ##################")
+//        for (item: String in streetList){
+//            Log.d(tag, item + "\n")
+//        }
+//        Log.d(tag, "################# Streets END ##################")
+//        // TESTING TODO delete
 
 
 

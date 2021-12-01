@@ -1,12 +1,9 @@
 package com.example.crumbmaster
 
-import android.app.Activity
-import android.content.Context
+import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.widget.TextView
 import androidx.activity.OnBackPressedCallback
-import com.beust.klaxon.Klaxon
 import com.example.crumbmaster.databinding.ActivityAchievemtsListBinding
 
 const val tag = "Debuging_TAG" // TODO remove later
@@ -30,7 +27,7 @@ class AchievemtsListActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityAchievemtsListBinding.inflate(layoutInflater)
-        setContentView(binding.getRoot())
+        setContentView(binding.root)
 
 
         val callback = object : OnBackPressedCallback(true){
@@ -45,7 +42,16 @@ class AchievemtsListActivity : AppCompatActivity() {
         achievements = loadJsonFromFile(fileName_ach, this)
 
         binding.ListViewAchievment.adapter = AchievementsAdapter(this, achievements!!)
+        binding.ListViewAchievment.isClickable = true
 
+        binding.ListViewAchievment.setOnItemClickListener { parent, view, position, id ->
+            val intent = Intent(this, AchievementDetailActivity::class.java)
+            intent.putExtra("title", achievements!![position].title)
+            intent.putExtra("points", achievements!![position].points.toString())
+            intent.putExtra("desc", achievements!![position].description)
+            intent.putExtra("obt", achievements!![position].obtained.toString())
+            startActivity(intent)
+        }
     }
 
 
