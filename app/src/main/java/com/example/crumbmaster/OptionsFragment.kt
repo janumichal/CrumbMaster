@@ -14,6 +14,7 @@ import androidx.activity.OnBackPressedCallback
 import androidx.fragment.app.Fragment
 import android.content.Context
 import androidx.appcompat.app.AppCompatActivity
+import androidx.appcompat.widget.SwitchCompat
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 
 class OptionsFragment : Fragment() {
@@ -68,12 +69,15 @@ class OptionsFragment : Fragment() {
 
         val backgroundEnabled = sharedPreferences?.getBoolean("backgroundEnabled", true)
 
-        val switchBackgroundLocation = getView()?.findViewById<Switch>(R.id.switchBackgroundLocation)
+        val switchBackgroundLocation = getView()?.findViewById<SwitchCompat>(R.id.switchBackgroundLocation)
 
         switchBackgroundLocation?.isChecked = backgroundEnabled == true
 
         switchBackgroundLocation?.setOnCheckedChangeListener { _, isChecked ->
             if (isChecked && !backgroundEnabled!!) {
+                startLocationService()
+            }
+            else if (isChecked) {
                 startLocationService()
             }
             else

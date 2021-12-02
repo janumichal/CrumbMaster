@@ -37,8 +37,6 @@ class AchievemtsListActivity : AppCompatActivity() {
         }
         onBackPressedDispatcher.addCallback(this, callback)
 
-
-        updateAchivById(1, this) // TODO to use elesewhere
         achievements = loadJsonFromFile(fileName_ach, this)
 
         binding.ListViewAchievment.adapter = AchievementsAdapter(this, achievements!!)
