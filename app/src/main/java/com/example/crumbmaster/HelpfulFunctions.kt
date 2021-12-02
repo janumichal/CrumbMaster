@@ -11,7 +11,7 @@ var points: Int = 0
 var streetList: MutableList<String> = ArrayList()
 val fileName_streets = "Streets.txt"
 
-private fun fileExists(fname: String?, context: Context): Boolean {
+fun fileExists(fname: String?, context: Context): Boolean {
     val file: File = context.getFileStreamPath(fname)
     return file.exists()
 }
