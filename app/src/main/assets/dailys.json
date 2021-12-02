@@ -1,0 +1,30 @@
+[
+  {
+    "id": 0,
+    "title":"Make 300 points on the map",
+    "goal": 300,
+    "actual": 124,
+    "points": 25
+  },
+  {
+    "id": 1,
+    "goal": 3,
+    "actual": 1,
+    "title":"Discovere 3 new streets",
+    "points": 25
+  },
+  {
+    "id": 2,
+    "goal": 3,
+    "actual": 2,
+    "title":"Walk the same street 3 times",
+    "points": 25
+  },
+  {
+    "id": 2,
+    "goal": 3,
+    "actual": 4,
+    "title": "Walk the same street 3 times",
+    "points": 25
+  }
+]

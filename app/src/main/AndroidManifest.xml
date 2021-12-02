@@ -36,6 +36,9 @@
             android:name=".AchievemtsListActivity"
             android:exported="false" />
         <activity
+            android:name=".DailysListActivity"
+            android:exported="false" />
+        <activity
             android:name=".MenuActivity"
             android:exported="true" />
         <activity

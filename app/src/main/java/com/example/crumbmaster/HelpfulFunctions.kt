@@ -123,11 +123,14 @@ fun addStreet(name: String, context: Context){
 
 //##################################################################################################
 var achievements : List<Achievement>? = emptyList()
+var dailys : List<Daily>? = emptyList()
 val fileName_ach = "Achievements.json"
 val fileName_points = "Points.json"
+val fileName_dailys = "Dailys.json"
 
-fun loadJsonFromFile(fileName: String, context: Context) : List<Achievement>?{
-    val jsonString : String = context.openFileInput("Achievements.json").bufferedReader().readText()
+inline fun <reified T> loadJsonFromFile(fileName: String, context: Context) : List<T>?{
+    val jsonString : String = context.openFileInput(fileName).bufferedReader().readText()
+    Log.d("json string", "loadJsonFromFile: " + jsonString)
     return Klaxon().parseArray(jsonString)
 }
 
