@@ -139,6 +139,10 @@ class MapActivity : AppCompatActivity(), OnMapReadyCallback {
         }
     }
 
+    private fun removeIMemFile(name: String, context: Context){
+        context.deleteFile(name)
+    }
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_map)
