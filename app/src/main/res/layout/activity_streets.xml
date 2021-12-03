@@ -30,6 +30,20 @@
         </com.google.android.material.chip.ChipGroup>
 
     </ScrollView >
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/BackBtn_streets"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentBottom="true"
+        android:backgroundTint="@color/black"
+        android:clickable="true"
+        android:src="@drawable/menu_icon_back"
+        app:borderWidth="0dp"
+        app:tint="@color/white"
+        app:useCompatPadding="false"
+        tools:ignore="SpeakableTextPresentCheck"
+        android:layout_margin="20dp"/>
 
 
 </RelativeLayout>

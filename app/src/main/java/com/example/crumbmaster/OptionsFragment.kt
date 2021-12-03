@@ -13,19 +13,26 @@ import android.widget.Toast
 import androidx.activity.OnBackPressedCallback
 import androidx.fragment.app.Fragment
 import android.content.Context
+import android.view.Menu
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.SwitchCompat
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 
 class OptionsFragment : Fragment() {
-
+    private fun swap2Fragment(fragment : Fragment){
+        requireActivity().supportFragmentManager.beginTransaction().apply {
+            //TODO Animation here
+            replace(R.id.FragmentContainer, fragment)
+            commit()
+        }
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
+        val menuFragment = MenuFragment()
         val callback = object : OnBackPressedCallback(true){
             override fun handleOnBackPressed() {
-                val menuFragment = MenuFragment()
                 activity?.supportFragmentManager?.beginTransaction()?.apply {
                     // TODO Animation ?
                     replace(R.id.FragmentContainer, menuFragment)
@@ -35,6 +42,7 @@ class OptionsFragment : Fragment() {
         }
 
         requireActivity().onBackPressedDispatcher.addCallback(this, callback)
+
 
     }
 
@@ -62,6 +70,12 @@ class OptionsFragment : Fragment() {
     @SuppressLint("UseSwitchCompatOrMaterialCode")
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
+        val menuFragment = MenuFragment()
+        val backBtn = view?.findViewById<FloatingActionButton>(R.id.BackBtn_settings)
+        backBtn?.setOnClickListener(){
+            swap2Fragment(menuFragment)
+        }
 
         val sharedPreferences = activity?.getSharedPreferences("shared preferences",
             AppCompatActivity.MODE_PRIVATE
