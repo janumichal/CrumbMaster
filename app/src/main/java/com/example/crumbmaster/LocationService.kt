@@ -48,8 +48,14 @@ class LocationService : Service() {
         val geoCoder = Geocoder(this, Locale.getDefault())
         val address : MutableList<Address> = geoCoder.getFromLocation(lat, long, 1)
 
-        streetName = address[0].thoroughfare
-        addStreet(streetName, this)
+        if (!address.isNullOrEmpty()) {
+            streetName = address[0].thoroughfare
+            if (streetName != null) {
+                addStreet(streetName, this)
+            }
+        }
+//        streetName = address[0].thoroughfare
+//        addStreet(streetName, this)
         /**if(streetName != null)
         Log.d("Debug:", "Ulica $streetName")*/
     }
