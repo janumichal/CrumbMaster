@@ -130,7 +130,6 @@ val fileName_dailys = "Dailys.json"
 
 inline fun <reified T> loadJsonFromFile(fileName: String, context: Context) : List<T>?{
     val jsonString : String = context.openFileInput(fileName).bufferedReader().readText()
-    Log.d("json string", "loadJsonFromFile: " + jsonString)
     return Klaxon().parseArray(jsonString)
 }
 
