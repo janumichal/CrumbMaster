@@ -70,6 +70,14 @@ class MenuFragment : Fragment() {
             requireActivity().overridePendingTransition(R.anim.hold, R.anim.hold)
         }
 
+        //DAILYS
+        val dailyQuestsBtn = getView()?.findViewById<Button>(R.id.dailyQuest)
+        dailyQuestsBtn?.setOnClickListener(){
+            val intent = Intent(context, DailysListActivity::class.java)
+            startActivity(intent)
+            requireActivity().overridePendingTransition(R.anim.hold, R.anim.hold)
+        }
+
 
         // STATISTICS
         val statisticsBtn = getView()?.findViewById<Button>(R.id.StatisticsBtn)
