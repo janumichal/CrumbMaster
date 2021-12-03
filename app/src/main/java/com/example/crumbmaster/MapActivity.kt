@@ -155,6 +155,9 @@ class MapActivity : AppCompatActivity(), OnMapReadyCallback {
         // load streets internal file
         loadStreetsFromIMem(this)
         dailys = loadJsonFromFile(fileName_dailys,this)
+        if ( !fileExists(fileName_date_last_dailys,this) && !containsActiveDailys() ) {
+            getNewDailys(this)
+        }
 
         val mMenuBtn = findViewById<FloatingActionButton>(R.id.MenuBtn)
         mMenuBtn.setOnClickListener{

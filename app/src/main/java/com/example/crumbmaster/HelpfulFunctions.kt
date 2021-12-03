@@ -214,6 +214,15 @@ fun updateDailys(progress: Int,type: Int,context: Context) {
     writeDailysToFile(context)
 }
 
+fun containsActiveDailys() : Boolean {
+    dailys?.forEach {
+        if (it.active ) {
+            return true
+        }
+    }
+    return false
+}
+
 fun writeDailysToFile(context: Context) {
     val newJsonString = Klaxon().toJsonString(dailys)
     context.openFileOutput(fileName_dailys, Context.MODE_PRIVATE).use {
