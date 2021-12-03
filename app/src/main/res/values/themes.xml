@@ -13,4 +13,16 @@
         <item name="android:statusBarColor" tools:targetApi="l">?attr/colorPrimaryVariant</item>
         <!-- Customize your theme here. -->
     </style>
+    <style name="Theme.CrumbMaster.NoActionBar">
+        <item name="windowActionBar">false</item>
+        <item name="windowNoTitle">true</item>
+    </style>
+    <style name="Theme.CrumbMaster.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar" />
+    <style name="Theme.CrumbMaster.PopupOverlay" parent="ThemeOverlay.AppCompat.Light" />
+
+    <style name="Theme.MyTheme" parent="Theme.AppCompat.Light">
+        <item name="colorControlActivated">#FF783e</item>
+        <item name="colorSwitchThumbNormal">#FFBB86FC</item>
+        <item name="android:colorForeground">#FFBB86FC</item>
+    </style>
 </resources>

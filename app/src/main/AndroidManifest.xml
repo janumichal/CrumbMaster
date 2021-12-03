@@ -5,6 +5,7 @@
 
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
     <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
+    <uses-permission android:name="android.permission.FOREGROUND_SERVICE" />
 
     <application
         android:allowBackup="true"
@@ -13,10 +14,19 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.CrumbMaster">
+        <activity
+            android:name=".StreetsActivity"
+            android:exported="false" />
+        <activity
+            android:name=".AchievementDetailActivity"
+            android:exported="false"
+            android:label="@string/title_activity_achievement_detail"
+            android:theme="@style/Theme.CrumbMaster.NoActionBar" />
+
         <service
             android:name=".LocationService"
             android:enabled="true"
-            android:exported="false"></service>
+            android:exported="false" />
 
         <meta-data
             android:name="com.google.android.geo.API_KEY"

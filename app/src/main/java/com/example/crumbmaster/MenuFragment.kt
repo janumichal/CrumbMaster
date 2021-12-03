@@ -78,6 +78,14 @@ class MenuFragment : Fragment() {
             swap2Fragment(statisticsFragment)
         }
 
+        //ROADS
+        val streetsBtn = getView()?.findViewById<Button>(R.id.dicsStreets)
+        streetsBtn?.setOnClickListener(){
+            val intent = Intent(context, StreetsActivity::class.java)
+            startActivity(intent)
+            requireActivity().overridePendingTransition(R.anim.hold, R.anim.hold)
+        }
+
     }
 
 }

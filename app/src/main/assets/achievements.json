@@ -9,71 +9,71 @@
     {
         "id": 1,
         "obtained":false,
-        "title":"Discovered 10%",
-        "description":"You walked 10% of all streets in teh city.",
+        "title":"Discovered 10 Streets",
+        "description":"You walked 10 streets of all streets in the city.",
         "points": 10
     },
     {
         "id": 2,
         "obtained":false,
-        "title":"Discovered 20%",
-        "description":"You walked 20% of all streets in teh city.",
+        "title":"Discovered 20 Streets",
+        "description":"You walked 20 streets of all streets in the city.",
         "points": 15
     },
     {
         "id": 3,
         "obtained":false,
-        "title":"Discovered 30%",
-        "description":"You walked 30% of all streets in teh city.",
+        "title":"Discovered 30 Streets",
+        "description":"You walked 30 streets of all streets in the city.",
         "points": 20
     },
     {
         "id": 4,
         "obtained":false,
-        "title":"Discovered 40%",
-        "description":"You walked 40% of all streets in teh city.",
+        "title":"Discovered 40 Streets",
+        "description":"You walked 40 streets of all streets in the city.",
         "points": 25
     },
     {
         "id": 5,
         "obtained":false,
-        "title":"Discovered 50%",
-        "description":"You walked 50% of all streets in teh city.",
+        "title":"Discovered 50 Streets",
+        "description":"You walked 50 streets of all streets in the city.",
         "points": 50
     },
     {
         "id": 6,
         "obtained":false,
-        "title":"Discovered 60%",
-        "description":"You walked 60% of all streets in teh city.",
+        "title":"Discovered 60 Streets",
+        "description":"You walked 60 streets of all streets in the city.",
         "points": 55
     },
     {
         "id": 7,
         "obtained":false,
-        "title":"Discovered 70%",
-        "description":"You walked 70% of all streets in teh city.",
+        "title":"Discovered 70 Streets",
+        "description":"You walked 70 streets of all streets in the city.",
         "points": 60
     },
     {
         "id": 8,
         "obtained":false,
-        "title":"Discovered 80%",
-        "description":"You walked 80% of all streets in teh city.",
+        "title":"Discovered 80 Streets",
+        "description":"You walked 80 streets of all streets in the city.",
         "points": 65
     },
     {
         "id": 9,
         "obtained":false,
-        "title":"Discovered 90%",
-        "description":"You walked 90% of all streets in teh city.",
+        "title":"Discovered 90 Streets",
+        "description":"You walked 90 streets of all streets in the city.",
         "points": 80
     },
     {
         "id": 10,
         "obtained":false,
-        "title":"Discovered 100%",
-        "description":"Congrats!!! You walked 100% of all streets in teh city.",
+        "title":"Discovered 100 Streets",
+        "description":"Congrats!!! You walked 100 streets of all streets in the city.",
         "points": 1000
     }
 ]

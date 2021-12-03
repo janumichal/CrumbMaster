@@ -1,40 +1,22 @@
 package com.example.crumbmaster
 
-import android.content.Context
+import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import androidx.activity.OnBackPressedCallback
-import com.beust.klaxon.Klaxon
 import com.example.crumbmaster.databinding.ActivityAchievemtsListBinding
 
+const val tag = "Debuging_TAG" // TODO remove later
+
+
+
+
+//######################################################################################################
+
 class AchievemtsListActivity : AppCompatActivity() {
-    private var achievements : List<Achievement>? = emptyList()
+
     private lateinit var binding : ActivityAchievemtsListBinding
-    private val fileName = "Achievements.json"
 
-    private fun loadAchFromFile(fileName: String){
-        val jsonString : String = openFileInput("Achievements.json").bufferedReader().readText()
-        achievements = Klaxon().parseArray(jsonString)
-    }
-
-    private fun achObtained(ach_id: Int){
-        val jsonString : String = openFileInput(fileName).bufferedReader().readText()
-        val tmpAchievements : List<Achievement>? = Klaxon().parseArray(jsonString)
-
-        for (i in tmpAchievements!!.indices){
-            if (tmpAchievements[i].id == ach_id){
-                tmpAchievements[i].obtained = true
-            }
-        }
-
-        val newJsonString = Klaxon().toJsonString(tmpAchievements)
-
-        openFileOutput(fileName, Context.MODE_PRIVATE).use {
-            it.write(newJsonString.toByteArray())
-        }
-        loadAchFromFile(fileName)
-
-    }
 
 
     fun return2Map(){
@@ -45,7 +27,7 @@ class AchievemtsListActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityAchievemtsListBinding.inflate(layoutInflater)
-        setContentView(binding.getRoot())
+        setContentView(binding.root)
 
 
         val callback = object : OnBackPressedCallback(true){
@@ -55,11 +37,19 @@ class AchievemtsListActivity : AppCompatActivity() {
         }
         onBackPressedDispatcher.addCallback(this, callback)
 
+        achievements = loadJsonFromFile(fileName_ach, this)
 
-        achObtained(1) // TODO to use elesewhere
-        loadAchFromFile(fileName)
         binding.ListViewAchievment.adapter = AchievementsAdapter(this, achievements!!)
+        binding.ListViewAchievment.isClickable = true
 
+        binding.ListViewAchievment.setOnItemClickListener { parent, view, position, id ->
+            val intent = Intent(this, AchievementDetailActivity::class.java)
+            intent.putExtra("title", achievements!![position].title)
+            intent.putExtra("points", achievements!![position].points.toString())
+            intent.putExtra("desc", achievements!![position].description)
+            intent.putExtra("obt", achievements!![position].obtained.toString())
+            startActivity(intent)
+        }
     }
 
 

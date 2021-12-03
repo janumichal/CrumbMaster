@@ -21,7 +21,9 @@ import android.os.Handler
 import android.os.Looper
 import android.util.DisplayMetrics
 import android.util.Log
+import android.view.View
 import android.widget.ImageView
+import android.widget.TextView
 import androidx.annotation.RequiresApi
 import androidx.core.app.ActivityCompat
 import com.google.android.gms.location.*
@@ -33,11 +35,11 @@ import com.google.android.gms.maps.model.*
 import com.google.android.material.snackbar.Snackbar
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
-import java.io.File
-import java.io.IOException
+import java.io.*
+import java.lang.StringBuilder
+import kotlin.collections.ArrayList
 
 
-const val tag = "Debuging_TAG" // TODO remove later
 
 
 class MapActivity : AppCompatActivity(), OnMapReadyCallback {
@@ -121,27 +123,40 @@ class MapActivity : AppCompatActivity(), OnMapReadyCallback {
         return ret
     }
 
-    fun fileExists(fname: String?): Boolean {
-        val file: File = baseContext.getFileStreamPath(fname)
-        return file.exists()
-    }
-
-    private fun copyAchievements(){
-//        if(!fileExists("Achievements.json")){
-            val fileName = "Achievements.json"
-            val jsonString : String = loadJsonFromAssets("achievements.json")
+    private fun copyAssets2InternalMem(from: String, to: String){
+        if(!fileExists(to, this)){
+            val fileName = to
+            val jsonString : String = loadJsonFromAssets(from)
             this.openFileOutput(fileName, Context.MODE_PRIVATE).use {
                 it.write(jsonString.toByteArray())
             }
-//        }
+        }
 
+    }
+    private fun removeContentIMem(name: String, context: Context){
+        this.openFileOutput(name, Context.MODE_PRIVATE).use {
+            it.write("".toByteArray())
+        }
+    }
+
+    private fun removeIMemFile(name: String, context: Context){
+        context.deleteFile(name)
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_map)
 
-        copyAchievements()
+        // Copy from assets to internal mem
+        copyAssets2InternalMem("achievements.json", "Achievements.json")
+        copyAssets2InternalMem("points.json", "Points.json")
+
+        // load current points
+        addPoints(0, this) // load points from internal mem
+        updatePoints(this) // show points
+
+        // load streets internal file
+        loadStreetsFromIMem(this)
 
         val mMenuBtn = findViewById<FloatingActionButton>(R.id.MenuBtn)
         mMenuBtn.setOnClickListener{
@@ -186,7 +201,14 @@ class MapActivity : AppCompatActivity(), OnMapReadyCallback {
         val geoCoder = Geocoder(this, Locale.getDefault())
         val address : MutableList<Address> = geoCoder.getFromLocation(lat, long, 1)
 
-        streetName = address[0].thoroughfare
+        if (!address.isNullOrEmpty()) {
+            streetName = address[0].thoroughfare
+            if (streetName != null) {
+                addStreet(streetName, this)
+            }
+        }
+
+
         /**if(streetName != null)
             Log.d("Debug:", "Ulica $streetName")*/
     }
@@ -363,6 +385,7 @@ class MapActivity : AppCompatActivity(), OnMapReadyCallback {
     override fun onResume() {
         super.onResume()
 
+        updatePoints(this)
         startTrackingPosition()
 
         val menuBtn = findViewById<FloatingActionButton>(R.id.MenuBtn)

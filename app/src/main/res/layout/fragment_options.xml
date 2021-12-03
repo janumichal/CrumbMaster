@@ -1,16 +1,46 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.core.widget.NestedScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".OptionsFragment">
+    tools:context=".OptionsFragment"
+    android:background="#101114">
 
+    <TextView
+        android:id="@+id/settings_textview"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="20dp"
+        android:layout_marginTop="10dp"
+        android:text="Settings"
+        android:textColor="@color/white"
+        android:textSize="34sp"
+        android:textStyle="bold" />
 
-    <Switch
-        android:id="@+id/switchBackgroundLocation"
+    <ScrollView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:checked="true"
-        android:layout_margin="@dimen/text_margin"
-        android:text="Allow background location" />
-</androidx.core.widget.NestedScrollView>
+        android:layout_below="@id/settings_textview"
+        android:layout_marginStart="10dp"
+        android:layout_marginTop="10dp"
+        android:layout_marginEnd="10dp"
+        android:layout_marginBottom="10dp"
+        android:scrollbars="none">
+
+        <androidx.appcompat.widget.SwitchCompat
+            android:id="@+id/switchBackgroundLocation"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="@dimen/text_margin"
+            android:checked="true"
+            android:text="Allow background location"
+            android:textColor="@color/white"
+            android:textSize="15sp"
+            android:textStyle="bold"
+            android:theme="@style/Theme.MyTheme"/>
+
+    </ScrollView>
+
+
+
+</RelativeLayout>

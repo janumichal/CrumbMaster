@@ -11,4 +11,5 @@
     <color name="primary">#FF401F</color>
     <color name="secondary">#B32D16</color>
     <color name="crumb">#FF783e</color>
+    <color name="chip_color">#453C68</color>
 </resources>

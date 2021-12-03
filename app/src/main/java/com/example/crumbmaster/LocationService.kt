@@ -21,12 +21,15 @@ import android.annotation.SuppressLint
 import android.app.PendingIntent
 import android.content.Context
 import android.content.pm.PackageManager
+import android.location.Address
+import android.location.Geocoder
 import android.os.Looper
 import androidx.core.app.ActivityCompat
 import androidx.core.app.NotificationChannelCompat
 import androidx.core.app.NotificationCompat
 import com.google.android.gms.location.*
 import com.google.gson.reflect.TypeToken
+import java.util.*
 
 
 class LocationService : Service() {
@@ -38,6 +41,23 @@ class LocationService : Service() {
 
     override fun onBind(intent: Intent): IBinder {
         TODO("Return the communication channel to the service.")
+    }
+
+    private fun getStreetName(lat:Double, long:Double){
+        var streetName:String? = null
+        val geoCoder = Geocoder(this, Locale.getDefault())
+        val address : MutableList<Address> = geoCoder.getFromLocation(lat, long, 1)
+
+        if (!address.isNullOrEmpty()) {
+            streetName = address[0].thoroughfare
+            if (streetName != null) {
+                addStreet(streetName, this)
+            }
+        }
+//        streetName = address[0].thoroughfare
+//        addStreet(streetName, this)
+        /**if(streetName != null)
+        Log.d("Debug:", "Ulica $streetName")*/
     }
 
     private fun checkDistance(newLat:Double, newLong:Double):Boolean {
@@ -98,7 +118,7 @@ class LocationService : Service() {
 
             Log.d("Debug:", "Location: ${lastLocation.latitude}, ${lastLocation.longitude}")
 
-            //getStreetName(lastLocation.latitude, lastLocation.longitude)
+            getStreetName(lastLocation.latitude, lastLocation.longitude)
         }
     }
 
