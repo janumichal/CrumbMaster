@@ -16,16 +16,16 @@ class DailyAdapter (context: Activity, private val list: List<Daily>, ) : ArrayA
         val points = view.findViewById<TextView>(R.id.item_progress)
         val progressBar = view.findViewById<ProgressBar>(R.id.progress_quest_bar)
 
-        if ( list[position].goal <= list[position].actual ) {
+        if ( !list[position].active || list[position].goal <= list[position].progress ) {
             val questLayout = view.findViewById<View>(R.id.item_background)
             questLayout.visibility = View.GONE;
         }
 
         title.text = list[position].title
-        val score = list[position].actual.toString() + " / " + list[position].goal.toString()
+        val score = list[position].progress.toString() + " / " + list[position].goal.toString()
         points.text = score
         progressBar.max = list[position].goal
-        progressBar.progress = list[position].actual
+        progressBar.progress = list[position].progress
         return view
     }
 }

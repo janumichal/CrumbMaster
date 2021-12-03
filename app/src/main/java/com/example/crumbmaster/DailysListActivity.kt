@@ -6,40 +6,37 @@ import android.os.Bundle
 import androidx.activity.OnBackPressedCallback
 import com.example.crumbmaster.databinding.ActivityDailysListBinding
 import android.os.CountDownTimer
-import android.text.Layout
-import android.util.AttributeSet
 import android.util.Log
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
-import android.widget.Button
 import android.widget.TextView
-import androidx.appcompat.widget.SwitchCompat
-import com.google.android.gms.maps.SupportMapFragment
+import com.beust.klaxon.Klaxon
+import java.time.LocalDate
 import java.time.LocalDateTime
+import java.time.chrono.ChronoLocalDate
 import java.time.format.DateTimeFormatter
 
 class DailysListActivity() : AppCompatActivity() {
     private lateinit var binding: ActivityDailysListBinding
-    private var time_in_milli_seconds = 0L
-    private lateinit var countdown_timer: CountDownTimer
 
-    private fun startTimer() {
+    private fun startTimer(context: Context) {
         val current = LocalDateTime.now()
+
         val hours = current.format(DateTimeFormatter.ofPattern("HH")).toLong()
         val minutes = current.format(DateTimeFormatter.ofPattern("mm")).toLong()
         val seconds = current.format(DateTimeFormatter.ofPattern("ss")).toLong()
+
+        lateinit var countdown_timer: CountDownTimer
 
         var miliseconds = (23 - hours) * 3600000L +
                 (59 - minutes) * 60000L +
                 (59 - seconds) * 1000L
 
-        this.countdown_timer = object : CountDownTimer(miliseconds, 1000) {
+        countdown_timer = object : CountDownTimer(miliseconds, 1000) {
             override fun onFinish() {
+                getNewDailys(context)
+                return2Map()
             }
-
             override fun onTick(p0: Long) {
-                time_in_milli_seconds = p0
+                var time_in_milli_seconds = p0
                 val hours = ((time_in_milli_seconds / 1000) / 60) / 60
                 val minutes = ((time_in_milli_seconds / 1000) / 60 ) % 60
                 val seconds = (time_in_milli_seconds / 1000) % 60
@@ -67,7 +64,7 @@ class DailysListActivity() : AppCompatActivity() {
         binding = ActivityDailysListBinding.inflate(layoutInflater)
         setContentView(binding.getRoot())
 
-        startTimer()
+        startTimer(this)
 
         val callback = object : OnBackPressedCallback(true) {
             override fun handleOnBackPressed() {
@@ -76,8 +73,28 @@ class DailysListActivity() : AppCompatActivity() {
         }
         onBackPressedDispatcher.addCallback(this, callback)
 
-        dailys = loadJsonFromFile(fileName_dailys, this)
-        binding.ListViewDailys.adapter = DailyAdapter(this, dailys!!)
-    }
+        if ( !fileExists(fileName_date_last_dailys,this) ) {
+            dailys = getNewDailys( this)
+        }
+        val lastUpdateDate = getLastUpdateDailys(this)
+        val lastUpdateString = lastUpdateDate.format(DateTimeFormatter.ofPattern("yyyy-MM-d"))
+        Log.d("DATE", "Last Updated date: " + lastUpdateString)
 
+        val current = LocalDate.now()
+        val date = current.format(DateTimeFormatter.ofPattern("yyyy-MM-d"))
+        Log.d("DATE", "Current date: " + date)
+
+        if ( lastUpdateString != date ) {
+            Log.d("DATE", "Dates is not the same!!! " )
+            dailys = getNewDailys( this)
+        }
+
+        val tmpDailys = getActiveOrInProgressDailys();
+        val newJsonString = Klaxon().toJsonString(tmpDailys)
+        Log.d("DAILYS TMP", "to display: " + newJsonString)
+        val text = Klaxon().toJsonString(dailys)
+        Log.d("DAILYS", "all dailys: " + text)
+
+        binding.ListViewDailys.adapter = DailyAdapter(this, tmpDailys!!)
+    }
 }

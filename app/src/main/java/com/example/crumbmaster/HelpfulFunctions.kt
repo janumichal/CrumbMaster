@@ -6,10 +6,14 @@ import android.util.Log
 import android.widget.TextView
 import com.beust.klaxon.Klaxon
 import java.io.File
+import java.time.LocalDate
+import java.time.LocalDateTime
+import java.time.format.DateTimeFormatter
 
 var points: Int = 0
 var streetList: MutableList<String> = ArrayList()
 val fileName_streets = "Streets.txt"
+val fileName_date_last_dailys = "DateLastUpdate.txt"
 
 fun fileExists(fname: String?, context: Context): Boolean {
     val file: File = context.getFileStreamPath(fname)
@@ -114,11 +118,34 @@ private fun checkNumOfStrDiscovered(num: Int, context: Context){
 
 fun addStreet(name: String, context: Context){
     if(!streetList.contains(name)){
+        updateDailys(1,1,context)
         streetList.add(name)
         addStreet2IMem(name, context)
         addPoints(5, context)
         checkNumOfStrDiscovered(streetList.size, context)
     }
+}
+
+fun importLastUpdateDailys2Mem(context: Context,date: String) {
+    if(!fileExists(fileName_date_last_dailys, context)){
+        context.openFileOutput(fileName_date_last_dailys, Context.MODE_PRIVATE).use {
+            it.write(date.toByteArray())
+        }
+    } else {
+        context.openFileOutput(fileName_date_last_dailys, Context.MODE_PRIVATE).use {
+            it.write(date.toByteArray())
+        }
+    }
+
+    Log.d("Import Mem", "Import new date to Mem" + date)
+    val newDate = getLastUpdateDailys(context)
+    Log.d("Import Mem", "Import new date to Mem" + newDate.format(DateTimeFormatter.ofPattern("yyyy-MM-dd")))
+
+}
+
+fun getLastUpdateDailys(context: Context): LocalDate {
+    val stringDate: String = context.openFileInput(fileName_date_last_dailys).bufferedReader().readText()
+    return LocalDate.parse(stringDate, DateTimeFormatter.ISO_DATE)
 }
 
 //##################################################################################################
@@ -128,12 +155,74 @@ val fileName_ach = "Achievements.json"
 val fileName_points = "Points.json"
 val fileName_dailys = "Dailys.json"
 
+
 inline fun <reified T> loadJsonFromFile(fileName: String, context: Context) : List<T>?{
     val jsonString : String = context.openFileInput(fileName).bufferedReader().readText()
     return Klaxon().parseArray(jsonString)
 }
 
+fun getNewDailys(context: Context) : List<Daily>? {
+    resetDailys()
+    writeDailysToFile(context)
+    val current = LocalDateTime.now()
+    val date = current.format(DateTimeFormatter.ofPattern("yyyy-MM-dd"))
+    importLastUpdateDailys2Mem(context,date)
+
+    dailys = loadJsonFromFile(fileName_dailys, context)
+    val newJsonString = Klaxon().toJsonString(dailys)
+    Log.d("List Dailys", "getNewDailys: " + newJsonString)
+
+    for ( i in 0..2 ) {
+        val questId = (0..2).random() + i * 3
+        val daily : Daily? = dailys?.get(questId)
+        if (daily != null) {
+            daily.active = true
+        };
+    }
+
+    writeDailysToFile(context)
+    return dailys
+}
+
+fun getActiveOrInProgressDailys() : List<Daily>? {
+    val newDaily = arrayListOf<Daily?>()
+    dailys?.forEach {
+        if ( it.active && it.progress < it.goal ) {
+            newDaily.add(it);
+        }
+    }
+    return newDaily as List<Daily>
+}
+
+fun resetDailys() {
+    dailys?.forEach {
+        if (it.active) {
+            it.active = false
+            it.progress = 0
+        }
+    }
+    val newJsonString = Klaxon().toJsonString(dailys)
+    Log.d("RESET", "reseted values: " + newJsonString)
+}
+
+fun updateDailys(progress: Int,type: Int,context: Context) {
+    dailys?.forEach {
+        if (it.active && it.type == type) {
+            it.progress += progress
+        }
+    }
+    writeDailysToFile(context)
+}
+
+fun writeDailysToFile(context: Context) {
+    val newJsonString = Klaxon().toJsonString(dailys)
+    context.openFileOutput(fileName_dailys, Context.MODE_PRIVATE).use {
+        it.write(newJsonString.toByteArray())
+    }
+}
+
 fun addPoints(add: Int, context: Context){
+
     val jsonString : String = context.openFileInput(fileName_points).bufferedReader().readText()
     val tmpPoints : Points? = Klaxon().parse<Points>(jsonString)
 
@@ -171,6 +260,8 @@ fun updateAchivById(ach_id: Int, context: Context){
     achievements = loadJsonFromFile(fileName_ach, context)
 
 }
+
+
 
 fun isAchievObtainedById(id: Int, context: Context): Boolean{
     val jsonString : String = context.openFileInput(fileName_ach).bufferedReader().readText()

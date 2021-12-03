@@ -154,6 +154,7 @@ class MapActivity : AppCompatActivity(), OnMapReadyCallback {
 
         // load streets internal file
         loadStreetsFromIMem(this)
+        dailys = loadJsonFromFile(fileName_dailys,this)
 
         val mMenuBtn = findViewById<FloatingActionButton>(R.id.MenuBtn)
         mMenuBtn.setOnClickListener{
@@ -207,6 +208,7 @@ class MapActivity : AppCompatActivity(), OnMapReadyCallback {
     }
 
     private fun drawPoint(lat:Double, long:Double) {
+
         val circleOptions = CircleOptions()
 
         circleOptions.center(LatLng(lat, long))
