@@ -9,6 +9,7 @@ import android.os.CountDownTimer
 import android.util.Log
 import android.widget.TextView
 import com.beust.klaxon.Klaxon
+import com.google.android.material.floatingactionbutton.FloatingActionButton
 import java.time.LocalDate
 import java.time.LocalDateTime
 import java.time.chrono.ChronoLocalDate
@@ -64,6 +65,11 @@ class DailysListActivity() : AppCompatActivity() {
         binding = ActivityDailysListBinding.inflate(layoutInflater)
         setContentView(binding.getRoot())
 
+        val backBtn = findViewById<FloatingActionButton>(R.id.BackBtn_dailys)
+        backBtn?.setOnClickListener(){
+            return2Map()
+        }
+
         startTimer(this)
 
         val callback = object : OnBackPressedCallback(true) {
@@ -78,23 +84,15 @@ class DailysListActivity() : AppCompatActivity() {
         }
         val lastUpdateDate = getLastUpdateDailys(this)
         val lastUpdateString = lastUpdateDate.format(DateTimeFormatter.ofPattern("yyyy-MM-d"))
-        Log.d("DATE", "Last Updated date: " + lastUpdateString)
 
         val current = LocalDate.now()
         val date = current.format(DateTimeFormatter.ofPattern("yyyy-MM-d"))
-        Log.d("DATE", "Current date: " + date)
 
         if ( lastUpdateString != date ) {
-            Log.d("DATE", "Dates is not the same!!! " )
             dailys = getNewDailys( this)
         }
 
         val tmpDailys = getActiveDailys();
-        val newJsonString = Klaxon().toJsonString(tmpDailys)
-        Log.d("DAILYS TMP", "to display: " + newJsonString)
-        val text = Klaxon().toJsonString(dailys)
-        Log.d("DAILYS", "all dailys: " + text)
-
         binding.ListViewDailys.adapter = DailyAdapter(this, tmpDailys!!)
     }
 }
