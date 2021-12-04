@@ -117,12 +117,16 @@ private fun checkNumOfStrDiscovered(num: Int, context: Context){
 }
 
 fun addStreet(name: String, context: Context){
+    updateDailys(1,0,context)
     if(!streetList.contains(name)){
         updateDailys(1,1,context)
         streetList.add(name)
         addStreet2IMem(name, context)
         addPoints(5, context)
         checkNumOfStrDiscovered(streetList.size, context)
+    }
+    if (name[0] == street_letter ) {
+        updateDailys(1,2,context)
     }
 }
 
@@ -154,7 +158,7 @@ var dailys : List<Daily>? = emptyList()
 val fileName_ach = "Achievements.json"
 val fileName_points = "Points.json"
 val fileName_dailys = "Dailys.json"
-
+var street_letter = Char.MIN_VALUE
 
 inline fun <reified T> loadJsonFromFile(fileName: String, context: Context) : List<T>?{
     val jsonString : String = context.openFileInput(fileName).bufferedReader().readText()
@@ -177,17 +181,22 @@ fun getNewDailys(context: Context) : List<Daily>? {
         val daily : Daily? = dailys?.get(questId)
         if (daily != null) {
             daily.active = true
-        };
+        }
+        if (i == 2) {
+            if (daily != null) {
+                street_letter = daily.title[daily.title.length-1]
+            }
+        }
     }
 
     writeDailysToFile(context)
     return dailys
 }
 
-fun getActiveOrInProgressDailys() : List<Daily>? {
+fun getActiveDailys() : List<Daily>? {
     val newDaily = arrayListOf<Daily?>()
     dailys?.forEach {
-        if ( it.active && it.progress < it.goal ) {
+        if ( it.active ) {
             newDaily.add(it);
         }
     }
@@ -199,6 +208,7 @@ fun resetDailys() {
         if (it.active) {
             it.active = false
             it.progress = 0
+            it.obtained = false
         }
     }
     val newJsonString = Klaxon().toJsonString(dailys)
@@ -209,9 +219,22 @@ fun updateDailys(progress: Int,type: Int,context: Context) {
     dailys?.forEach {
         if (it.active && it.type == type) {
             it.progress += progress
+            if ( it.goal <= it.progress && !it.obtained ) {
+                it.obtained = true
+                addPoints(it.points,context)
+            }
         }
     }
     writeDailysToFile(context)
+}
+
+fun getStreetLetter(context: Context) : Char {
+    dailys?.forEach {
+        if (it.active && it.type == 2 ) {
+             return it.title[it.title.length-1]
+        }
+    }
+    return Char.MIN_VALUE
 }
 
 fun containsActiveDailys() : Boolean {

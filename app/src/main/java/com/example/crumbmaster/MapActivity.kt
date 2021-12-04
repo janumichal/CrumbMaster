@@ -40,8 +40,6 @@ import java.lang.StringBuilder
 import kotlin.collections.ArrayList
 
 
-
-
 class MapActivity : AppCompatActivity(), OnMapReadyCallback {
 
     private lateinit var mMap: GoogleMap
@@ -157,6 +155,8 @@ class MapActivity : AppCompatActivity(), OnMapReadyCallback {
         dailys = loadJsonFromFile(fileName_dailys,this)
         if ( !fileExists(fileName_date_last_dailys,this) && !containsActiveDailys() ) {
             getNewDailys(this)
+        } else {
+            street_letter = getStreetLetter(this)
         }
 
         val mMenuBtn = findViewById<FloatingActionButton>(R.id.MenuBtn)
@@ -301,6 +301,8 @@ class MapActivity : AppCompatActivity(), OnMapReadyCallback {
                 //coordinates = coordinates?.let { append(it, mark) }
                 drawPoint(lastLocation.latitude, lastLocation.longitude)
 
+
+
                 if (!backgroundEnabled) {
                     coordinates = coordinates?.let { append(it, mark) }
                     saveData()
@@ -314,7 +316,6 @@ class MapActivity : AppCompatActivity(), OnMapReadyCallback {
                 mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(mark, 18f))
                 firstLook = false
             }
-
 
             getStreetName(lastLocation.latitude, lastLocation.longitude)
             drawCurrentPosition(lastLocation.latitude, lastLocation.longitude)
