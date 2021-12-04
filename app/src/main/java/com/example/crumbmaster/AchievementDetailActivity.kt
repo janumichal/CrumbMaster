@@ -4,18 +4,39 @@ import android.annotation.SuppressLint
 import android.graphics.Color
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import androidx.activity.OnBackPressedCallback
 import com.example.crumbmaster.databinding.ActivityAchievementDetailBinding
+import com.google.android.material.floatingactionbutton.FloatingActionButton
 
 class AchievementDetailActivity : AppCompatActivity() {
 
     private lateinit var binding : ActivityAchievementDetailBinding
 
 
+    fun return2Map(){
+        finish()
+        overridePendingTransition(R.anim.hold, R.anim.fade_in)
+    }
+
     @SuppressLint("UseCompatLoadingForDrawables")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityAchievementDetailBinding.inflate(layoutInflater)
         setContentView(binding.root)
+
+
+        val backBtn = findViewById<FloatingActionButton>(R.id.BackBtn_detail)
+        backBtn?.setOnClickListener(){
+            return2Map()
+        }
+
+
+        val callback = object : OnBackPressedCallback(true){
+            override fun handleOnBackPressed() {
+                return2Map()
+            }
+        }
+        onBackPressedDispatcher.addCallback(this, callback)
 
         val padding_in_dp = 8 // 6 dps
         val scale = resources.displayMetrics.density

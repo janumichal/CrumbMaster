@@ -150,6 +150,7 @@ class MapActivity : AppCompatActivity(), OnMapReadyCallback {
         // Copy from assets to internal mem
         copyAssets2InternalMem("achievements.json", "Achievements.json")
         copyAssets2InternalMem("points.json", "Points.json")
+        copyAssets2InternalMem("dailys.json", "Dailys.json")
 
         // load current points
         addPoints(0, this) // load points from internal mem
@@ -157,6 +158,10 @@ class MapActivity : AppCompatActivity(), OnMapReadyCallback {
 
         // load streets internal file
         loadStreetsFromIMem(this)
+        dailys = loadJsonFromFile(fileName_dailys,this)
+        if ( !fileExists(fileName_date_last_dailys,this) && !containsActiveDailys() ) {
+            getNewDailys(this)
+        }
 
         val mMenuBtn = findViewById<FloatingActionButton>(R.id.MenuBtn)
         mMenuBtn.setOnClickListener{
@@ -207,13 +212,10 @@ class MapActivity : AppCompatActivity(), OnMapReadyCallback {
                 addStreet(streetName, this)
             }
         }
-
-
-        /**if(streetName != null)
-            Log.d("Debug:", "Ulica $streetName")*/
     }
 
     private fun drawPoint(lat:Double, long:Double) {
+
         val circleOptions = CircleOptions()
 
         circleOptions.center(LatLng(lat, long))

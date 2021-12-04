@@ -5,6 +5,7 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import androidx.activity.OnBackPressedCallback
 import com.example.crumbmaster.databinding.ActivityAchievemtsListBinding
+import com.google.android.material.floatingactionbutton.FloatingActionButton
 
 const val tag = "Debuging_TAG" // TODO remove later
 
@@ -28,6 +29,11 @@ class AchievemtsListActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         binding = ActivityAchievemtsListBinding.inflate(layoutInflater)
         setContentView(binding.root)
+
+        val backBtn = findViewById<FloatingActionButton>(R.id.BackBtn_achiev)
+        backBtn?.setOnClickListener(){
+            return2Map()
+        }
 
 
         val callback = object : OnBackPressedCallback(true){

@@ -6,8 +6,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import androidx.activity.OnBackPressedCallback
 import com.google.android.material.chip.Chip
-
-
+import com.google.android.material.floatingactionbutton.FloatingActionButton
 
 
 class StreetsActivity : AppCompatActivity() {
@@ -28,6 +27,11 @@ class StreetsActivity : AppCompatActivity() {
             }
         }
         onBackPressedDispatcher.addCallback(this, callback)
+
+        val backBtn = findViewById<FloatingActionButton>(R.id.BackBtn_streets)
+        backBtn?.setOnClickListener(){
+            return2Map()
+        }
 
         val chipGroup = findViewById<com.google.android.material.chip.ChipGroup>(R.id.chipGroup)
         val inflater : LayoutInflater = layoutInflater
