@@ -37,7 +37,7 @@
         android:layout_height="wrap_content"
         android:layout_alignParentEnd="true"
         android:layout_alignParentBottom="true"
-        android:backgroundTint="@color/black"
+        android:backgroundTint="#FF401F"
         android:clickable="true"
         android:src="@drawable/menu_icon_back"
         app:borderWidth="0dp"
