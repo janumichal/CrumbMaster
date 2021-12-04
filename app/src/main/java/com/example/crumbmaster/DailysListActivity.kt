@@ -89,7 +89,7 @@ class DailysListActivity() : AppCompatActivity() {
             dailys = getNewDailys( this)
         }
 
-        val tmpDailys = getActiveOrInProgressDailys();
+        val tmpDailys = getActiveDailys();
         val newJsonString = Klaxon().toJsonString(tmpDailys)
         Log.d("DAILYS TMP", "to display: " + newJsonString)
         val text = Klaxon().toJsonString(dailys)

@@ -25,7 +25,7 @@
         <TextView
             android:id="@+id/item_title"
             android:layout_width="wrap_content"
-            android:layout_height="25dp"
+            android:layout_height="wrap_content"
             android:gravity="center_vertical"
             android:text="Example application"
             android:textColor="@color/white"
@@ -47,9 +47,9 @@
             android:id="@+id/points_bg"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginStart="10dp"
             android:gravity="center_horizontal|center_vertical|center"
             android:orientation="horizontal"
-            android:layout_marginStart="10dp"
             android:paddingStart="10dp"
             android:paddingEnd="10dp">
 
@@ -78,8 +78,8 @@
             style="@style/Widget.AppCompat.ProgressBar.Horizontal"
             android:layout_width="match_parent"
             android:layout_height="3dp"
-            android:layout_marginEnd="20dp"
             android:layout_marginTop="5dp"
+            android:layout_marginEnd="20dp"
             android:layout_marginBottom="3dp"
             android:background="@drawable/achievement_item_points_background"
             android:max="100"
