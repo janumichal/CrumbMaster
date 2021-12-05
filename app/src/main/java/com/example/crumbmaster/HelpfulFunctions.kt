@@ -118,16 +118,35 @@ private fun checkNumOfStrDiscovered(num: Int, context: Context){
 
 fun addStreet(name: String, context: Context){
     updateDailys(1,0,context)
+    updateCrumbsTotal(context)
+
+    updateCrumbsToday(context)
+    statistics?.let { updateMaxCrumbsPerDay(it.crumbs_today,context) }
+
     if(!streetList.contains(name)){
         updateDailys(1,1,context)
         streetList.add(name)
         addStreet2IMem(name, context)
         addPoints(5, context)
         checkNumOfStrDiscovered(streetList.size, context)
+
+        updateStreetsToday(context)
+        statistics?.let { updateMaxStreetsPerDay(it.streets_today,context) }
     }
     if (name[0] == street_letter ) {
         updateDailys(1,2,context)
     }
+    writeStatisticsToIMem(context)
+}
+
+fun achievementsObtained() : Int {
+    var number = 0
+    achievements?.forEach {
+        if (it.obtained) {
+            number += 1
+        }
+    }
+    return number
 }
 
 fun importLastUpdateDailys2Mem(context: Context,date: String) {
@@ -158,11 +177,18 @@ var dailys : List<Daily>? = emptyList()
 val fileName_ach = "Achievements.json"
 val fileName_points = "Points.json"
 val fileName_dailys = "Dailys.json"
+val fileName_statistics = "Statistics.json"
 var street_letter = Char.MIN_VALUE
+var statistics : Statistics? = null
 
 inline fun <reified T> loadJsonFromFile(fileName: String, context: Context) : List<T>?{
     val jsonString : String = context.openFileInput(fileName).bufferedReader().readText()
     return Klaxon().parseArray(jsonString)
+}
+
+fun loadStatisticsFromIMem(context: Context) : Statistics? {
+    val jsonString : String = context.openFileInput(fileName_statistics).bufferedReader().readText()
+    return Klaxon().parse(jsonString)
 }
 
 fun getNewDailys(context: Context) : List<Daily>? {
@@ -211,8 +237,9 @@ fun resetDailys() {
             it.obtained = false
         }
     }
-    val newJsonString = Klaxon().toJsonString(dailys)
-    Log.d("RESET", "reseted values: " + newJsonString)
+
+    statistics!!.crumbs_today = 0
+    statistics!!.streets_today = 0
 }
 
 fun updateDailys(progress: Int,type: Int,context: Context) {
@@ -222,10 +249,12 @@ fun updateDailys(progress: Int,type: Int,context: Context) {
             if ( it.goal <= it.progress && !it.obtained ) {
                 it.obtained = true
                 addPoints(it.points,context)
+                updateQuestsTotal(context)
             }
         }
     }
     writeDailysToFile(context)
+    writeStatisticsToIMem(context)
 }
 
 fun getStreetLetter(context: Context) : Char {
@@ -249,6 +278,47 @@ fun containsActiveDailys() : Boolean {
 fun writeDailysToFile(context: Context) {
     val newJsonString = Klaxon().toJsonString(dailys)
     context.openFileOutput(fileName_dailys, Context.MODE_PRIVATE).use {
+        it.write(newJsonString.toByteArray())
+    }
+}
+
+fun updateCrumbsTotal(context: Context ) {
+    statistics?.crumbs_total = statistics?.crumbs_total?.plus(1)!!
+}
+
+fun updateQuestsTotal(context: Context ) {
+    statistics?.quests_total = statistics?.quests_total?.plus(1)!!
+}
+
+fun updateCrumbsToday(context: Context) {
+    statistics?.crumbs_today = statistics?.crumbs_today?.plus(1)!!
+}
+
+fun updateStreetsToday(context: Context) {
+    statistics?.streets_today = statistics?.streets_today?.plus(1)!!
+}
+
+fun updateMaxCrumbsPerDay( value: Int,context: Context ) {
+    val max_crumbs = statistics?.max_crumbs_per_day
+    if (max_crumbs != null) {
+        if ( max_crumbs <= value ) {
+            statistics?.max_crumbs_per_day = value
+        }
+    }
+}
+
+fun updateMaxStreetsPerDay( value: Int,context: Context ) {
+    val max_streets = statistics?.max_streets_per_day
+    if (max_streets != null) {
+        if ( max_streets <= value ) {
+            statistics?.max_streets_per_day = value
+        }
+    }
+}
+
+fun writeStatisticsToIMem(context: Context) {
+    val newJsonString = Klaxon().toJsonString(statistics)
+    context.openFileOutput(fileName_statistics, Context.MODE_PRIVATE).use {
         it.write(newJsonString.toByteArray())
     }
 }
@@ -292,8 +362,6 @@ fun updateAchivById(ach_id: Int, context: Context){
     achievements = loadJsonFromFile(fileName_ach, context)
 
 }
-
-
 
 fun isAchievObtainedById(id: Int, context: Context): Boolean{
     val jsonString : String = context.openFileInput(fileName_ach).bufferedReader().readText()

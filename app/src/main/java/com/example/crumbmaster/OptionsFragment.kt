@@ -42,10 +42,7 @@ class OptionsFragment : Fragment() {
         }
 
         requireActivity().onBackPressedDispatcher.addCallback(this, callback)
-
-
     }
-
 
     override fun onCreateView(
         inflater: LayoutInflater,

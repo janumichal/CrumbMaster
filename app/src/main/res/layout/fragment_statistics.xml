@@ -4,9 +4,332 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    tools:context=".StatisticsFragment">
+    tools:context=".StatisticsFragment"
+    android:background="#101114">
 
+    <TextView
+        android:id="@+id/settings_textview"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="20dp"
+        android:layout_marginTop="10dp"
+        android:text="Statiscics"
+        android:textColor="@color/white"
+        android:textSize="34sp"
+        android:textStyle="bold" />
 
+    <LinearLayout
+        android:id="@+id/created_layout"
+        android:layout_width="match_parent"
+        android:layout_height="30dp"
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="10dp"
+        android:layout_below="@+id/settings_textview"
+        android:layout_marginTop="10dp"
+        android:orientation="horizontal">
+
+        <TextView
+            android:id="@+id/created_text"
+            android:layout_width="wrap_content"
+            android:layout_height="30dp"
+            android:gravity="left"
+            android:text="Frist run:"
+            android:textColor="@color/white"
+            android:textSize="20sp" />
+
+        <TextView
+            android:id="@+id/created_value"
+            android:layout_width="match_parent"
+            android:layout_height="30dp"
+            android:text="05.12.2021"
+            android:gravity="right"
+            android:textColor="@color/white"
+            android:textSize="20sp" />
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/drawn_crumbs"
+        android:layout_width="match_parent"
+        android:layout_height="30dp"
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="10dp"
+        android:layout_below="@+id/created_layout"
+        android:layout_marginTop="10dp"
+        android:orientation="horizontal">
+
+        <TextView
+            android:id="@+id/drawn_crumbs_text"
+            android:layout_width="wrap_content"
+            android:layout_height="30dp"
+            android:gravity="left"
+            android:text="Drawn crumbs:"
+            android:textColor="@color/white"
+            android:textSize="20sp"
+             />
+
+        <TextView
+            android:id="@+id/drawn_crumbs_value"
+            android:layout_width="match_parent"
+            android:layout_height="30dp"
+            android:text="45245"
+            android:gravity="right"
+            android:textColor="@color/white"
+            android:textSize="20sp"
+             />
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/drawn_crumbs_per_day"
+        android:layout_width="match_parent"
+        android:layout_height="30dp"
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="10dp"
+        android:layout_below="@+id/drawn_crumbs"
+        android:layout_marginTop="10dp"
+        android:orientation="horizontal">
+
+        <TextView
+            android:id="@+id/drawn_crumbs_per_day_text"
+            android:layout_width="wrap_content"
+            android:layout_height="30dp"
+            android:gravity="left"
+            android:text="Max drawn crumbs per day:"
+            android:textColor="@color/white"
+            android:textSize="20sp"
+            />
+
+        <TextView
+            android:id="@+id/drawn_crumbs_per_day_value"
+            android:layout_width="match_parent"
+            android:layout_height="30dp"
+            android:text="45245"
+            android:gravity="right"
+            android:textColor="@color/white"
+            android:textSize="20sp"
+            />
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/drawn_crumbs_today"
+        android:layout_width="match_parent"
+        android:layout_height="30dp"
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="10dp"
+        android:layout_below="@+id/drawn_crumbs_per_day"
+        android:layout_marginTop="10dp"
+        android:orientation="horizontal">
+
+        <TextView
+            android:id="@+id/drawn_crumbs_today_text"
+            android:layout_width="wrap_content"
+            android:layout_height="30dp"
+            android:gravity="left"
+            android:text="Drawn crumbs today:"
+            android:textColor="@color/white"
+            android:textSize="20sp"
+            />
+
+        <TextView
+            android:id="@+id/drawn_crumbs_today_value"
+            android:layout_width="match_parent"
+            android:layout_height="30dp"
+            android:text="45245"
+            android:gravity="right"
+            android:textColor="@color/white"
+            android:textSize="20sp"
+            />
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/quest"
+        android:layout_width="match_parent"
+        android:layout_height="30dp"
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="10dp"
+        android:layout_below="@+id/drawn_crumbs_today"
+        android:layout_marginTop="10dp"
+        android:orientation="horizontal">
+
+        <TextView
+            android:id="@+id/quest_text"
+            android:layout_width="wrap_content"
+            android:layout_height="30dp"
+            android:gravity="left"
+            android:text="Quests completed:"
+            android:textColor="@color/white"
+            android:textSize="20sp"
+             />
+
+        <TextView
+            android:id="@+id/quest_value"
+            android:layout_width="match_parent"
+            android:layout_height="30dp"
+            android:text="42"
+            android:gravity="right"
+            android:textColor="@color/white"
+            android:textSize="20sp"
+             />
+
+    </LinearLayout>
+    <LinearLayout
+        android:id="@+id/achievement"
+        android:layout_width="match_parent"
+        android:layout_height="30dp"
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="10dp"
+        android:layout_below="@+id/quest"
+        android:layout_marginTop="10dp"
+        android:orientation="horizontal">
+
+        <TextView
+            android:id="@+id/achievement_text"
+            android:layout_width="wrap_content"
+            android:layout_height="30dp"
+            android:gravity="left"
+            android:text="Achievemts unlocked:"
+            android:textColor="@color/white"
+            android:textSize="20sp"
+             />
+
+        <TextView
+            android:id="@+id/achievement_value"
+            android:layout_width="match_parent"
+            android:layout_height="30dp"
+            android:text="5/11"
+            android:gravity="right"
+            android:textColor="@color/white"
+            android:textSize="20sp"
+             />
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/point"
+        android:layout_width="match_parent"
+        android:layout_height="30dp"
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="10dp"
+        android:layout_below="@+id/achievement"
+        android:layout_marginTop="10dp"
+        android:orientation="horizontal">
+
+        <TextView
+            android:id="@+id/point_text"
+            android:layout_width="wrap_content"
+            android:layout_height="30dp"
+            android:gravity="left"
+            android:text="Points earned:"
+            android:textColor="@color/white"
+            android:textSize="20sp"
+             />
+
+        <TextView
+            android:id="@+id/point_value"
+            android:layout_width="match_parent"
+            android:layout_height="30dp"
+            android:text="125"
+            android:gravity="right"
+            android:textColor="@color/white"
+            android:textSize="20sp"
+             />
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/street"
+        android:layout_width="match_parent"
+        android:layout_height="30dp"
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="10dp"
+        android:layout_below="@+id/point"
+        android:layout_marginTop="10dp"
+        android:orientation="horizontal">
+
+        <TextView
+            android:id="@+id/street_text"
+            android:layout_width="wrap_content"
+            android:layout_height="30dp"
+            android:gravity="left"
+            android:text="Discovered streets:"
+            android:textColor="@color/white"
+            android:textSize="20sp"
+             />
+
+        <TextView
+            android:id="@+id/street_value"
+            android:layout_width="match_parent"
+            android:layout_height="30dp"
+            android:text="12"
+            android:gravity="right"
+            android:textColor="@color/white"
+            android:textSize="20sp"
+             />
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/street_per_day"
+        android:layout_width="match_parent"
+        android:layout_height="30dp"
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="10dp"
+        android:layout_below="@+id/street"
+        android:layout_marginTop="10dp"
+        android:orientation="horizontal">
+
+        <TextView
+            android:id="@+id/street_per_day_text"
+            android:layout_width="wrap_content"
+            android:layout_height="30dp"
+            android:gravity="left"
+            android:text="Max discovered streets per day:"
+            android:textColor="@color/white"
+            android:textSize="20sp"
+            />
+
+        <TextView
+            android:id="@+id/street_per_day_value"
+            android:layout_width="match_parent"
+            android:layout_height="30dp"
+            android:text="12"
+            android:gravity="right"
+            android:textColor="@color/white"
+            android:textSize="20sp"
+            />
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/street_today"
+        android:layout_width="match_parent"
+        android:layout_height="30dp"
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="10dp"
+        android:layout_below="@+id/street_per_day"
+        android:layout_marginTop="10dp"
+        android:orientation="horizontal">
+
+        <TextView
+            android:id="@+id/street_today_text"
+            android:layout_width="wrap_content"
+            android:layout_height="30dp"
+            android:gravity="left"
+            android:text="Discovered streets today:"
+            android:textColor="@color/white"
+            android:textSize="20sp"
+            />
+
+        <TextView
+            android:id="@+id/street_today_value"
+            android:layout_width="match_parent"
+            android:layout_height="30dp"
+            android:text="12"
+            android:gravity="right"
+            android:textColor="@color/white"
+            android:textSize="20sp"
+            />
+    </LinearLayout>
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton
         android:id="@+id/BackBtn_stats"

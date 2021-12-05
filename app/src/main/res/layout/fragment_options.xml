@@ -38,7 +38,7 @@
             android:textColor="@color/white"
             android:textSize="15sp"
             android:textStyle="bold"
-            android:theme="@style/Theme.MyTheme"/>
+            android:theme="@style/Theme.MyTheme" />
 
     </ScrollView>
     <com.google.android.material.floatingactionbutton.FloatingActionButton

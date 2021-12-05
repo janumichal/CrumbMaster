@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".AboutActivity"
+    android:background="#101114">
+    <TextView
+        android:id="@+id/title_about"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="20dp"
+        android:layout_marginTop="10dp"
+        android:text="About"
+        android:textColor="@color/white"
+        android:textSize="34sp"
+        android:textStyle="bold" />
+
+    <TextView
+        android:id="@+id/purpuse_text"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="20dp"
+        android:layout_marginTop="10dp"
+        android:text="Today, we live a more and more digital world than in the past. We try to limit movement and enjoy the comfort of home. Relax in front of the TV, watch what's new on Instagram or play computer games. Ordinary walks through the city disappear from our daily plans, but exercise is very important for our health. Therefore we create this app to motivate people to run out for at least 5-10 minutes and try to complete some daily quests in the real world. We want to motivate them a bit to move, to discover new parts of the city, and ultimately to get to know the environment where we live. So don't sit at home and come out!"
+        android:layout_below="@+id/title_about"
+        android:textColor="@color/white"
+        android:textSize="18sp" />
+
+    <TextView
+        android:id="@+id/who_we_are"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="20dp"
+        android:layout_marginTop="10dp"
+        android:text="Who we are"
+        android:layout_below="@+id/purpuse_text"
+        android:textColor="@color/white"
+        android:textSize="26sp"
+        android:textStyle="bold" />
+
+    <TextView
+        android:id="@+id/who_we_are_text"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="20dp"
+        android:layout_marginTop="10dp"
+        android:text="We are a young four-member team of students who are trying to improve people's living habits, because we ourselves feel the need to move during university studies. We also created this application in order to complete the university subject TAMa (Creating applications for mobile devices)"
+        android:layout_below="@+id/who_we_are"
+        android:textColor="@color/white"
+        android:textSize="18sp" />
+
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/BackBtn_about"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentBottom="true"
+        android:backgroundTint="#FF401F"
+        android:clickable="true"
+        android:src="@drawable/menu_icon_back"
+        app:borderWidth="0dp"
+        app:tint="@color/white"
+        app:useCompatPadding="false"
+        tools:ignore="SpeakableTextPresentCheck"
+        android:layout_margin="20dp"/>
+
+
+</RelativeLayout>
