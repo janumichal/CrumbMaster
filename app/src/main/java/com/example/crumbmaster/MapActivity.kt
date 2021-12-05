@@ -29,6 +29,8 @@ import com.google.android.material.snackbar.Snackbar
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
 import java.io.*
+import java.time.LocalDate
+import java.time.format.DateTimeFormatter
 
 
 class MapActivity : AppCompatActivity(), OnMapReadyCallback {
@@ -145,14 +147,27 @@ class MapActivity : AppCompatActivity(), OnMapReadyCallback {
         addPoints(0, this) // load points from internal mem
         updatePoints(this) // show points
 
+        //load statistics file
+        if ( !fileExists(fileName_statistics,this) ) {
+            val todayDate = LocalDate.now()
+            val stringDate = todayDate.format(DateTimeFormatter.ofPattern("dd.MM.YYYY"))
+            statistics = Statistics(stringDate,0,0,0,0,0,0)
+        } else {
+            statistics = loadStatisticsFromIMem(this)
+        }
+
         // load streets internal file
         loadStreetsFromIMem(this)
+        //load dailys
         dailys = loadJsonFromFile(fileName_dailys,this)
         if ( !fileExists(fileName_date_last_dailys,this) && !containsActiveDailys() ) {
             getNewDailys(this)
         } else {
             street_letter = getStreetLetter(this)
         }
+
+        //load achievements
+        achievements = loadJsonFromFile(fileName_ach,this)
 
         val mMenuBtn = findViewById<FloatingActionButton>(R.id.MenuBtn)
         mMenuBtn.setOnClickListener{

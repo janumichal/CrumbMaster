@@ -18,6 +18,9 @@
             android:name=".StreetsActivity"
             android:exported="false" />
         <activity
+            android:name=".AboutActivity"
+            android:exported="false" />
+        <activity
             android:name=".AchievementDetailActivity"
             android:exported="false"
             android:label="@string/title_activity_achievement_detail"
